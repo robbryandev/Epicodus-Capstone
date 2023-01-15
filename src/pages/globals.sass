@@ -1,0 +1,68 @@
+@import "../utils/bootstrap_sass/bootstrap"
+
+$primary: #6a6a6a
+$secondary: #bbbbbb
+
+.flex-row
+  display: flex
+  justify-content: center
+  
+$nav-height: 10vh
+.app-nav
+  z-index: 2
+  position: fixed
+  margin-left: 20vw
+  margin-right: 20vw
+  bottom: 0
+  left: 0
+  width: 100%
+  height: $nav-height
+  margin: 0
+  background-color: rgb(37, 37, 37)
+
+$nav-item-spacing: 1rem
+.nav_item
+  margin-top: calc(($nav-height / 6))
+  margin-left: $nav-item-spacing
+  margin-right: $nav-item-spacing
+  background-color: $secondary
+  accent-color: $secondary
+
+.nav_item:hover
+  background-color: darken($secondary, 8)
+  accent-color: darken($secondary, 8)
+
+.nav_active
+  box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem gray
+  color: white
+  text-shadow: 0.1rem 0.1rem black
+  background-color: $primary
+  accent-color: $primary
+
+.nav_active:hover
+  box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem gray
+  color: white
+  text-shadow: 0.1rem 0.1rem black
+  background-color: darken($primary, 8)
+  accent-color: darken($primary, 8)
+
+.body
+  z-index: 1
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: calc(100vh - $nav-height)
+  margin: 0
+  background-color: rgb(238, 232, 232)
+
+@media only screen and (min-width: 768px)
+  $nav-height: 6vh
+  .app-nav
+    top: 0
+    height: $nav-height
+  .body
+    top: $nav-height
+    width: 100%
+    height: calc(100vh - $nav-height)
+    margin: 0
