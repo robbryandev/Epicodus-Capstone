@@ -1,13 +1,10 @@
-import { Inter } from '@next/font/google'
 import Link from 'next/link'
-import styles from './index.module.sass'
-
-const inter = Inter({ subsets: ['latin'] })
+import styles from './index.module.css'
 
 export default function Home() {
   return (
-    <main className={[inter.className].join(" ")}>
-        <div className="body"></div>
+    <main className={""}>
+        <div className="homePage"></div>
     </main>
   )
 }

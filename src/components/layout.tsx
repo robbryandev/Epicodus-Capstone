@@ -1,5 +1,4 @@
-import Nav from './nav'
-import Head from "next/head"
+import Nav from "./nav.server"
 
 export default function RootLayout({
   children,
@@ -7,7 +6,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className='root'>
+    <div className='root bg-slate-200 w-screen h-screen'>
       <div className="app-nav">
         <Nav/>
       </div>

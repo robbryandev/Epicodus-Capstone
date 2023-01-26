@@ -1,6 +1,5 @@
 import Layout from '@/components/layout'
-import "@/utils/bootstrap_sass/bootstrap.scss"
-import './globals.sass'
+import './globals.css'
 
 export default function MyApp({ Component, pageProps }: {Component: any, pageProps: any}) {
     if (typeof window) {
