@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import styles from './index.module.sass'
 
-export default function Home() {
+export default function Shows() {
   return (
-    <main className={""}>
-        <div className="body"></div>
-    </main>
+    <>
+      <div className="body"></div>
+    </>
   )
 }
