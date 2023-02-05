@@ -1,5 +1,4 @@
 import { Html, Head, Main, NextScript } from 'next/document'
-import useLocalStorage from 'use-local-storage'
 import React from 'react'
 
 export default function Document() {
