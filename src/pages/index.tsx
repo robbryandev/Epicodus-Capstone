@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
         <div className="homePage m-0 mt-12 p-0">
-          <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 w-82 m-auto'>
+          <div className='flex flex-wrap gap-1 w-82 m-auto'>
             <Card img='/favicon.ico' artist='super super long test string' description={loremText} href="/shows"/>
             <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
             <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
