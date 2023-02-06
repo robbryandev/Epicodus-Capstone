@@ -48,6 +48,24 @@ module.exports = {
               }
             }
           }
+        },
+        {
+          name: 'midnight',
+          extend: {
+            colors: {
+              background: {
+                main: '#292524',
+                card: '#1c1917',
+                nav: '#18181b'
+              },
+              txt: {
+                main: "white",
+                shows: "#6d28d9",
+                home: "#6d28d9",
+                account: "#6d28d9"
+              }
+            }
+          }
         }
       ]
     })

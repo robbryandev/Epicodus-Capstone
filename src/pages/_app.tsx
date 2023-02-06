@@ -28,6 +28,10 @@ export default function App({ Component, pageProps }: AppProps) {
                             <Select.ItemText>Light</Select.ItemText>
                             <Select.ItemIndicator />
                         </Select.Item>
+                        <Select.Item value='midnight' className='bg-stone-800 text-violet-700 p-2'>
+                            <Select.ItemText>Midnight</Select.ItemText>
+                            <Select.ItemIndicator />
+                        </Select.Item>
                     </Select.Viewport>
                     <Select.Arrow />
                 </Select.Content>
