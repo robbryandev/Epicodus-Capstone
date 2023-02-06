@@ -13,9 +13,9 @@ export default function Nav() {
                     }
                 </div>
                 <div key="Home" className="mt-2">
-                    {router.asPath === "/" ? 
-                    <Link href="/" className="px-3 mx-3 text-txt-home">Home</Link> :
-                    <Link href="/" className="px-3 mx-3">Home</Link>   
+                    {router.asPath === "/home" ? 
+                    <Link href="/home" className="px-3 mx-3 text-txt-home">Home</Link> :
+                    <Link href="/home" className="px-3 mx-3">Home</Link>   
                     }
                 </div>
                 <div key="Shows" className="mt-2">
