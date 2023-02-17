@@ -1,0 +1,1 @@
+[vercel deploy](https://nextjs.org/docs/deployment)
