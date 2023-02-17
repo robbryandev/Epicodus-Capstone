@@ -1,18 +1,20 @@
-import Link from "next/link";
-import Image from "next/image";
+import Link from "next/link"
+import Image from "next/image"
+import {AiOutlineHeart, AiFillHeart} from "react-icons/ai"
+import { useState } from "react"
 
 type CardProps = {
   artist: string
   img: string
-  description: string
+  date: string
   href: string
 }
 
 export default function Card(props: CardProps) {
+    const [liked, setLiked] = useState(false)
     const maxTitle = 12
     const artistName = props.artist.length > maxTitle ? props.artist.slice(0, maxTitle) + "..." : props.artist
-    const maxDescription = 65
-    const artistDescription = props.description.length > maxDescription ? props.description.slice(0, maxDescription) + "..." : props.description
+    const showDate = props.date
     return (
       <div className={`artist-card w-40 h-44 pt-2 m-auto my-1 bg-background-card rounded-md text-txt-main`}>
         <div className="artist-card-holder relative text-center">
@@ -22,9 +24,20 @@ export default function Card(props: CardProps) {
             </div>
             <p className="text-center my-3 px-2 pb-1">{artistName}</p>
           </div>
-          <div className="artist-card-back bg-background-card p-2">
+          <div className="artist-card-back bg-background-card p-2 text-center w-full h-auto">
             <Link href={"/shows"} className="show-link block mb-2 font-bold text-txt-shows">{artistName}</Link>
-            <p className="text-txt-main">{artistDescription}</p>
+          <p className="text-txt-main text-base">{showDate}</p>
+            <div className="w-1/5 m-auto text-txt-main text-4xl">
+              <button onClick={() => setLiked(Number(liked) === 0)}>
+                {
+                  liked ? (
+                    <AiFillHeart/>
+                  ) : (
+                    <AiOutlineHeart/>
+                  )
+                }
+              </button>
+            </div>
           </div>
         </div>
       </div>

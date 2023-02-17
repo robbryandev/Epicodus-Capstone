@@ -5,19 +5,25 @@ import * as Select from '@radix-ui/react-select';
 import { RiPaintBrushFill } from 'react-icons/ri';
 import React, { useState } from 'react'
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [theme, setTheme] = useState("dark")
+  const [theme, setTheme] = useState("dark");
+  const renderRoutes = ["/home", "/account", "/shows"]
   const router = useRouter();
   return (
     <div className={`app bg-background-main ${theme}`}>
-      <div className={`settings bg-background-nav min-w-full ${router.asPath !== "/" ? "md:min-w-0" : ""} md:w-10 h-14 text-txt-main z-10 fixed top-0 pt-2 px-6 text-3xl`}>
+      <Head>
+        <title>Local Shows</title>
+        <meta name="description" content="Welcome to your local show destination<"/>
+      </Head>
+      <div className={`settings bg-background-nav min-w-full ${renderRoutes.includes(router.asPath) ? "md:min-w-0" : ""} md:w-10 h-14 text-txt-main z-10 fixed top-0 pt-2 px-6 text-3xl`}>
         <h3 className='fixed top-1 left-3'>Local Shows</h3>
-        {router.asPath !== "/" ? (
+        {renderRoutes.includes(router.asPath) ? (
           <Select.Root value={theme} onValueChange={setTheme}>
               <Select.Trigger className='fixed no-select right-12 md:right-20'>
-                  <Select.Value aria-label="theme">
-                    <RiPaintBrushFill/>
+                  <Select.Value aria-label="dialog">
+                    <RiPaintBrushFill name='theme_button'/>
                   </Select.Value>
               </Select.Trigger>
               <Select.Portal>
@@ -44,7 +50,7 @@ export default function App({ Component, pageProps }: AppProps) {
       }
       </div>
       <Component {...pageProps} />
-      {router.asPath !== "/" ? (<Nav/>) : null }
+      {renderRoutes.includes(router.asPath) ? (<Nav/>) : null }
     </div>
   )
 }

@@ -9,38 +9,37 @@ export default function Home() {
     <>
         <div className="homePage m-0 mt-12 p-0">
           <div className='flex flex-wrap gap-1 w-82 m-auto pb-12'>
-            <Card img='/favicon.ico' artist='super super long test string' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
-            <Card img='/favicon.ico' artist='test' description={loremText} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
+            <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
           </div>
         </div>
     </>
