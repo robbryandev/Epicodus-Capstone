@@ -19,11 +19,14 @@ const server = z.object({
     process.env.VERCEL ? z.string().min(1) : z.string().url(),
   ),
   // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
+  // github oath
   GITHUB_ID: z.string(),
   GITHUB_SECRET: z.string(),
+  // discord oath
   DISCORD_CLIENT_ID: z.string(),
   DISCORD_CLIENT_SECRET: z.string(),
   DISCORD_AUTH_LINK: z.string(),
+  // ticketmaster api
   TICKET_KEY: z.string(),
   TICKET_SECRET: z.string()
 });
