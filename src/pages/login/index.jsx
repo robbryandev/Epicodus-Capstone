@@ -1,5 +1,6 @@
-import { getProviders, signIn } from "next-auth/react";
+import { getProviders, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 // import { useForm } from 'react-hook-form'; 
 
 // const magic = typeof window !== 'undefined' && new Magic(process.env.NEXT_PUBLIC_MAGIC_PK || 'a');
@@ -7,6 +8,12 @@ import { useRouter } from "next/router";
 export default function Login({ providers }) {
     const router = useRouter();
     // const { register, handleSubmit } = useForm();
+    const {data: session} = useSession()
+    useEffect(() => {
+        if (session) {
+            router.push("/home")
+        }
+    })
     async function handleEmail({email}) {
         // const email = event.target.email.value.toLowerCase()
         console.log(email);
