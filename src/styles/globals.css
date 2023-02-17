@@ -44,7 +44,6 @@
   transform: rotateY(180deg);
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 80qw;
 }
 
 .show-link {

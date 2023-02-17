@@ -26,8 +26,8 @@ export default function Card(props: CardProps) {
           </div>
           <div className="artist-card-back bg-background-card p-2 text-center w-full h-auto">
             <Link href={"/shows"} className="show-link block mb-2 font-bold text-txt-shows">{artistName}</Link>
-          <p className="text-txt-main text-base">{showDate}</p>
-            <div className="w-1/5 m-auto text-txt-main text-4xl">
+            <p className="text-txt-main text-base">{showDate}</p>
+            <div className="w-1/5 m-auto text-txt-home text-4xl">
               <button onClick={() => setLiked(Number(liked) === 0)}>
                 {
                   liked ? (
