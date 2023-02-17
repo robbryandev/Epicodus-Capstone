@@ -24,8 +24,14 @@ export default function Home() {
     console.log("Error: " + err)
     setHasPosition(false)
   }
+  function promptLocation() {
+    navigator.geolocation.getCurrentPosition(handlePosition, handlePositionErr)
+  }
+
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(handlePosition, handlePositionErr)}, [position])
+    promptLocation()
+  }, [position])
+
   return (
     <>
         <div className="homePage m-0 pt-12 p-0">
@@ -67,7 +73,7 @@ export default function Home() {
             ) : (
               <div className='text-center text-txt-main pt-12'>
                 <p className='text-2xl p-6'>Local Shows needs your location to get shows near you</p>
-                <button className='p-1.5 bg-background-card rounded-md'>Get Location</button>
+                <button className='p-1.5 bg-background-card rounded-md' onClick={promptLocation}>Get Location</button>
               </div>
             )
           }
