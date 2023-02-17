@@ -14,7 +14,6 @@ export default function Layout({ children }: any) {
   const router = useRouter();
 
   const showLogin = () => {
-    console.log("session: " + session)
     if (typeof session == "undefined" && renderRoutes.includes(router.asPath)) {
       return true
     } else {
