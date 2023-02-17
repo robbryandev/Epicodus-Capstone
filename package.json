@@ -8,7 +8,7 @@
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
-    "ssl": "set HTTPS=true SSL_CRT_FILE=./cert.pem SSL_KEY_FILE=./key.pem && npm run dev"
+    "ssl": "set HTTPS=true SSL_CRT_FILE=./cert.pem SSL_KEY_FILE=./key.pem && npm run start"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.5",
