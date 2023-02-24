@@ -28,7 +28,7 @@ export default function Card(props: CardProps) {
             </div>
             <p className="text-center my-3 px-2 pb-1">{artistNameFront}</p>
           </div>
-          <div className="artist-card-back bg-background-card p-2 text-center w-full h-auto">
+          <div className="artist-card-back bg-background-card p-2 pb-4 text-center w-full h-auto">
             <Link href={props.href} className="show-link block mb-2 font-bold text-txt-shows">{artistNameBack}</Link>
             <p className="text-txt-main text-base">{showDate}</p>
             <div className="w-1/5 m-auto text-txt-home text-4xl">

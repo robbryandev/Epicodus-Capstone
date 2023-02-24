@@ -41,6 +41,9 @@ export default function Home() {
       promptLocation()
     }
   }, [session])
+  useEffect(() => {
+    getShows(position, setShows, setHasShows)
+  }, [hasPosition])
 
   return (
     <>
