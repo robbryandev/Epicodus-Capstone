@@ -5,6 +5,7 @@ import {AiOutlineHeart, AiFillHeart} from "react-icons/ai"
 import { useState } from "react"
 
 type CardProps = {
+  id: string
   artist: string
   img: string
   date: string
@@ -20,7 +21,7 @@ export default function Card(props: CardProps) {
     const propDate = props.date.split("-")
     const showDate = `${propDate[1]}-${propDate[2]}-${propDate[0]}`
     return (
-      <div className={`artist-card w-40 h-44 pt-2 m-auto my-1 bg-background-card rounded-md text-txt-main`}>
+      <div className={`artist-card w-40 h-44 pt-2 m-auto my-1 bg-background-card rounded-md text-txt-main`} id={props.id}>
         <div className="artist-card-holder relative text-center">
           <div className="artist-card-front w-full h-full">
             <div className={`w-9/12 h-auto m-auto p-0 relative top-2 rounded-md bg-gray-100 overflow-hidden`}>

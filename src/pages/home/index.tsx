@@ -17,6 +17,8 @@ export default function Home() {
   const [hasPosition, setHasPosition] = useState(false)
   const [shows, setShows] = useState([] as Show[])
   const [hasShows, setHasShows] = useState(false)
+  const [first, setFirst] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [page, setPage] = useState(0)
   const [pages, setPages] = useState(0)
   const {data: session} = useSession()
@@ -41,10 +43,18 @@ export default function Home() {
     }
   }, [session])
   useEffect(() => {
-    if (session && position.hash) {
+    if (session && position.hash && first) {
       getShows(position, setShows, setHasShows, setPage, setPages)
+      setFirst(false)
     }
   }, [hasPosition])
+  useEffect(() => {
+    if (loading) {
+      setTimeout(() => {
+        setLoading(false)
+      }, 300)
+    }
+  }, [loading])
 
   return (
     <>
@@ -55,12 +65,16 @@ export default function Home() {
                 <>                
                   <div className='flex flex-wrap gap-1 w-82 m-auto pb-2'>
                     {
-                      [...shows].map((show) => {
-                        return <Card key={show.id} img={show.img} artist={show.artist} date={show.date} href={show.href}/>
+                      shows.map((show) => {
+                        return <Card key={show.id} id={show.id} img={show.img} artist={show.artist} date={show.date} href={show.href}/>
                       })
                     }
                   </div>
-                  <NoMore showCallback={setShows} hasShowsCallback={setHasShows} pageCallback={setPage} pagesCallback={setPages} shows={shows} page={page} pages={pages} position={position}/>
+                  {
+                    !first && !loading ? (
+                      <NoMore showCallback={setShows} hasShowsCallback={setHasShows} pageCallback={setPage} pagesCallback={setPages} loadingCallback={setLoading} shows={shows} page={page} pages={pages} position={position} loading={loading}/>
+                    ) : null
+                  }
                 </>
               ) : (
                 <div className='text-center text-txt-main pt-12'>
