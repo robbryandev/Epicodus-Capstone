@@ -1,4 +1,3 @@
-import { Inter } from '@next/font/google'
 import Card from '@/components/Card.server'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
@@ -6,8 +5,6 @@ import * as geohash from "ngeohash"
 import {v4} from "uuid"
 import { getShows, type Show } from '@/utils/shows'
 import NoMore from "@/components/NoMore"
-
-const inter = Inter({ subsets: ['latin'] })
 
 export type UserLocation = {
   lat: number,
@@ -44,8 +41,8 @@ export default function Home() {
     }
   }, [session])
   useEffect(() => {
-    if (session) {
-      getShows(position, setShows, setHasShows)
+    if (session && position.hash) {
+      getShows(position, setShows, setHasShows, setPage, setPages)
     }
   }, [hasPosition])
 
@@ -58,17 +55,17 @@ export default function Home() {
                 <>                
                   <div className='flex flex-wrap gap-1 w-82 m-auto pb-2'>
                     {
-                      shows.map((show) => {
-                        return <Card key={v4()} img={show.img} artist={show.artist} date={show.date} href={show.href}/>
+                      [...shows].map((show) => {
+                        return <Card key={show.id} img={show.img} artist={show.artist} date={show.date} href={show.href}/>
                       })
                     }
                   </div>
-                  <NoMore showCallback={setShows} hasShowsCallback={setHasShows} pageCallback={setPage} shows={shows} page={page}/>
+                  <NoMore showCallback={setShows} hasShowsCallback={setHasShows} pageCallback={setPage} pagesCallback={setPages} shows={shows} page={page} pages={pages} position={position}/>
                 </>
               ) : (
                 <div className='text-center text-txt-main pt-12'>
                   <p className='text-2xl p-6'>Sorry... There&lsquo;s no shows :(</p>
-                  <button className='p-1.5 bg-background-card rounded-md' onClick={() => getShows(position, setShows, setHasShows)}>Look again</button>
+                  <button className='p-1.5 bg-background-card rounded-md' onClick={() => getShows(position, setShows, setHasShows, setPage, setPages)}>Look again</button>
                 </div>                
               )
             ) : (
