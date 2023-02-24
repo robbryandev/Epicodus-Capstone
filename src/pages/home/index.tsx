@@ -79,7 +79,6 @@ export default function Home() {
                       return <Card key={v4()} img={show.img} artist={show.artist} date={show.date} href={show.href}/>
                     })
                   }
-                  <Card img='/favicon.ico' artist='test' date={"10-20-23"} href="/shows"/>
                 </div>
               ) : (
                 <div className='text-center text-txt-main pt-12'>
