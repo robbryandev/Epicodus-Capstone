@@ -20,5 +20,15 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 's1.ticketm.net',
+        port: '',
+        pathname: '/**/*',
+      },
+    ],
+  },
 };
 export default config;

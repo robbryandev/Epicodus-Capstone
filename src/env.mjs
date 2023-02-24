@@ -27,7 +27,6 @@ const server = z.object({
   DISCORD_CLIENT_SECRET: z.string(),
   DISCORD_AUTH_LINK: z.string(),
   // ticketmaster api
-  TICKET_KEY: z.string(),
   TICKET_SECRET: z.string()
 });
 
@@ -38,6 +37,7 @@ const server = z.object({
  */
 const client = z.object({
   // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
+  NEXT_PUBLIC_TICKET_KEY: z.string()
 });
 
 /**
@@ -55,7 +55,7 @@ const processEnv = {
   DISCORD_AUTH_LINK: process.env.DISCORD_AUTH_LINK,
   GITHUB_ID: process.env.GITHUB_ID,
   GITHUB_SECRET: process.env.GITHUB_SECRET,
-  TICKET_KEY: process.env.TICKET_KEY,
+  NEXT_PUBLIC_TICKET_KEY: process.env.NEXT_PUBLIC_TICKET_KEY,
   TICKET_SECRET: process.env.TICKET_SECRET
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
