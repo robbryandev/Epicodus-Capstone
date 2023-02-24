@@ -3,9 +3,9 @@ import Card from '@/components/Card.server'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import * as geohash from "ngeohash"
-import { env } from '@/env.mjs'
 import {v4} from "uuid"
 import { getShows, type Show } from '@/utils/shows'
+import NoMore from "@/components/NoMore"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,6 +20,8 @@ export default function Home() {
   const [hasPosition, setHasPosition] = useState(false)
   const [shows, setShows] = useState([] as Show[])
   const [hasShows, setHasShows] = useState(false)
+  const [page, setPage] = useState(0)
+  const [pages, setPages] = useState(0)
   const {data: session} = useSession()
 
   function handlePosition(res: GeolocationPosition) {
@@ -61,7 +63,7 @@ export default function Home() {
                       })
                     }
                   </div>
-                  <p className='text-2xl p-6 text-txt-main text-center pb-20'>Sorry... There&lsquo;s no more shows :(</p>
+                  <NoMore showCallback={setShows} hasShowsCallback={setHasShows} pageCallback={setPage} shows={shows} page={page}/>
                 </>
               ) : (
                 <div className='text-center text-txt-main pt-12'>
