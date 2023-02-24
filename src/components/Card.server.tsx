@@ -17,7 +17,8 @@ export default function Card(props: CardProps) {
     const artistNameFront = props.artist.length > maxTitle ? props.artist.slice(0, maxTitle) + "..." : props.artist
     const maxFullName = 25
     const artistNameBack = props.artist.length > maxFullName ? props.artist.slice(0, maxFullName) + "..." : props.artist
-    const showDate = props.date
+    const propDate = props.date.split("-")
+    const showDate = `${propDate[1]}-${propDate[2]}-${propDate[0]}`
     return (
       <div className={`artist-card w-40 h-44 pt-2 m-auto my-1 bg-background-card rounded-md text-txt-main`}>
         <div className="artist-card-holder relative text-center">
@@ -28,7 +29,7 @@ export default function Card(props: CardProps) {
             <p className="text-center my-3 px-2 pb-1">{artistNameFront}</p>
           </div>
           <div className="artist-card-back bg-background-card p-2 text-center w-full h-auto">
-            <Link href={"/shows"} className="show-link block mb-2 font-bold text-txt-shows">{artistNameBack}</Link>
+            <Link href={props.href} className="show-link block mb-2 font-bold text-txt-shows">{artistNameBack}</Link>
             <p className="text-txt-main text-base">{showDate}</p>
             <div className="w-1/5 m-auto text-txt-home text-4xl">
               <button onClick={() => setLiked(Number(liked) === 0)}>
