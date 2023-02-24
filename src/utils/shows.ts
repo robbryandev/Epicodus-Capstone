@@ -28,7 +28,7 @@ export async function getShows(position: UserLocation , showsCallback: CallableF
       }
       if (localStorage.getItem("shows") == null) {
         let result: Show[] = []
-        const res = await fetch(`https://app.ticketmaster.com/discovery/v2/events.json?apikey=${env.NEXT_PUBLIC_TICKET_KEY}&segmentName=Music&unit=miles&radius=10&geoPoint=${position.hash}&size=100&sort=date,asc`)
+        const res = await fetch(`https://app.ticketmaster.com/discovery/v2/events.json?apikey=${env.NEXT_PUBLIC_TICKET_KEY}&segmentName=Music&unit=miles&radius=10&geoPoint=${position.hash}&size=100&sort=date,asc`, {mode: "cors"})
         const rjson = await res.json()
         rjson._embedded.events.forEach((ev: any) => {
           result.push({artist: ev.name, href: ev.url, img: ev.images[0].url, date: ev.dates.start.localDate})

@@ -42,7 +42,9 @@ export default function Home() {
     }
   }, [session])
   useEffect(() => {
-    getShows(position, setShows, setHasShows)
+    if (session) {
+      getShows(position, setShows, setHasShows)
+    }
   }, [hasPosition])
 
   return (
