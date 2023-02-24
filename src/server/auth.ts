@@ -3,14 +3,15 @@ import {
   getServerSession,
   type NextAuthOptions,
   type DefaultSession,
+  Account,
 } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "../env.mjs";
-import { prisma } from "./db";
-import GithubProvider from "next-auth/providers/github";
-import DiscordProvider from "next-auth/providers/discord";
+import GithubProvider, { GithubProfile } from "next-auth/providers/github";
+import DiscordProvider, { DiscordProfile } from "next-auth/providers/discord";
 import {Magic} from "@magic-sdk/admin";
 import Credentials from "next-auth/providers/credentials";
+import { profile } from "console";
 
 /**
  * Module augmentation for `next-auth` types.
@@ -42,21 +43,57 @@ declare module "next-auth" {
  **/
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session({ session, user }) {
+    session({ session, user, token }) {
       if (session.user) {
-        session.user.id = user.id;
+        if (token) {
+          const account: Account = token.account as Account
+          let profile: any
+          switch (account.provider) {
+            case "github":
+              profile = token.profile as GithubProfile
+              session.user.id = `${profile.id}`
+              break
+            case "discord":
+              profile = token.profile as DiscordProfile
+              session.user.id = `${profile.id}`
+              break
+            default:
+              session.user.id = account.provider
+              break
+          }
+        }
         // session.user.role = user.role; <-- put other properties on the session here
       }
       return session;
     },
+    jwt({token, user, account, profile, isNewUser}) {
+      if (account) {
+          token.account = account;
+      }
+      if (profile) {
+          token.profile = profile;
+      }
+      if (user) {
+          token.user = user;
+      }
+      if (isNewUser) {
+        token.newUser = true
+      } else {
+        token.newUser = false
+      }
+      return Promise.resolve(token);
+    }
   },
-  adapter: PrismaAdapter(prisma),
   providers: [
     GithubProvider({
+      name: "github",
+      id: "github",
       clientId: process.env.GITHUB_ID!,
       clientSecret: process.env.GITHUB_SECRET!,
     }),
     DiscordProvider({
+      name: "discord",
+      id: "discord",
       clientId: process.env.DISCORD_CLIENT_ID!,
       clientSecret: process.env.DISCORD_CLIENT_SECRET!,
       authorization: process.env.DISCORD_AUTH_LINK,
