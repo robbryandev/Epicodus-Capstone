@@ -13,7 +13,6 @@ export type Show = {
 export async function getShows(
   position: UserLocation,
   showsCallback: CallableFunction,
-  hasShowsCallback: CallableFunction,
   pageCallback: CallableFunction,
   pagesCallback: CallableFunction,
   moreShows = false,
@@ -32,10 +31,6 @@ export async function getShows(
             localStorage.removeItem("pages");
           } else {
             showsCallback(shows.shows);
-            pagesCallback(localStorage.getItem("pages"))
-            if (shows.shows.length > 0) {
-              hasShowsCallback(true);
-            }
             console.log("got shows from localstorage");
           }
         }
@@ -48,7 +43,6 @@ export async function getShows(
           localStorage.removeItem("shows");
           url = url + `&page=${page}`;
           console.log(`set page arg, pages=${pages}`);
-          pageCallback(page);
         }
         console.log(`request url: ${url}`);
         const res = await fetch(url);
@@ -65,12 +59,7 @@ export async function getShows(
         console.log(`Total pages: ${rjson.page.totalPages}`);
         localStorage.setItem("pages", rjson.page.totalPages)
         pagesCallback(rjson.page.totalPages);
-        setTimeout(() => {
-          showsCallback(result);
-          if (result.length > 0) {
-            hasShowsCallback(true);
-          }
-        }, 500);
+        showsCallback(result);
         console.log(result);
         const resultObj = { shows: result, time: Date.now() };
         localStorage.setItem("shows", JSON.stringify(resultObj));
