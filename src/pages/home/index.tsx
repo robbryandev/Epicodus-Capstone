@@ -1,5 +1,5 @@
 import Card from '@/components/Card.server'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import * as geohash from "ngeohash"
 import {v4} from "uuid"
@@ -32,11 +32,11 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if (session) {
-      console.log(session)
-      promptLocation()
-    }
-  }, [session])
+      if (session && JSON.stringify(position) == "{}") {
+        console.log(session)
+        promptLocation()
+      }
+    }, [session, position])
   return (
     <>
         <div className="homePage m-0 pt-16 p-0">
