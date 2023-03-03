@@ -1,10 +1,11 @@
 import Card from "@/components/Card"
 import { getShows, Show } from "@/utils/shows"
 import { useSession } from "next-auth/react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 export default function Shows() {
   const {data: session} = useSession()
+  const [shows, setShows] = useState(getSaved())
   function getSaved() {
     let result = [] as Show[]
     if (typeof window != "undefined") {
@@ -31,14 +32,16 @@ export default function Shows() {
     return result
   }
   useEffect(() => {
-    getSaved()
+    setInterval(() => {
+      setShows(getSaved())
+    }, 1500)
   }, [])
   return (
     <>
-      <div className="shows pt-16">
+      <div className="shows mx-4 py-16 p-0">
         <div className="inline-flex flex-wrap gap-1 w-82 m-auto pb-2">
           {
-            getSaved().map((show) => {
+            shows.map((show) => {
               return <Card key={show.id} id={show.id} img={show.img} saved={show.saved} artist={show.artist} date={show.date} href={show.href}/>
             })
           }

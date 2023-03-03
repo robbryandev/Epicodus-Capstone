@@ -41,11 +41,11 @@ export default function Home() {
     }, [session, position])
   return (
     <>
-        <div className="homePage m-0 pt-16 p-0">
+        <div className="homePage m-0 mx-4 pt-16 p-0">
           {
             hasPosition ? (
                 <>                
-                  <div className='flex flex-wrap gap-1 w-82 m-auto pb-2'>
+                  <div className='inline-flex flex-wrap gap-1 w-82 m-auto pb-2'>
                     {
                       shows.map((show) => {
                         return <Card key={show.id} id={show.id} img={show.img} saved={show.saved} artist={show.artist} date={show.date} href={show.href}/>
