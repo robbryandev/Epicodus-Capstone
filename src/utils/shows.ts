@@ -22,17 +22,13 @@ export async function getShows(
 ) {
   return new Promise(async (resolve, reject) => {
     if (typeof window !== "undefined") {
-      if (localStorage.getItem("shows") != null && !moreShows) {
-        const storageShows = localStorage.getItem("shows");
-        if (storageShows != null) {
-          const shows = JSON.parse(storageShows);
-          if (Date.now() - shows.time > 60_000 * 60 * 24) {
-            localStorage.removeItem("shows");
-            localStorage.removeItem("pages");
-          } else {
-            showsCallback(shows.shows);
-            console.log("got shows from localstorage");
-          }
+      const storageShows = localStorage.getItem("shows");
+      if (storageShows != null) {
+        const showTime = JSON.parse(storageShows).time;
+        if (Date.now() - showTime > 60_000 * 60 * 24) {
+          localStorage.removeItem("shows");
+          localStorage.removeItem("pages");
+          localStorage.removeItem("page");
         }
       }
       if (localStorage.getItem("shows") == null || moreShows) {
@@ -57,7 +53,7 @@ export async function getShows(
           });
         });
         console.log(`Total pages: ${rjson.page.totalPages}`);
-        localStorage.setItem("pages", rjson.page.totalPages)
+        localStorage.setItem("pages", rjson.page.totalPages);
         pagesCallback(rjson.page.totalPages);
         showsCallback(result);
         console.log(result);

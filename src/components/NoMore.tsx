@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import useOnScreen from "@/hooks/useOnScreen"
 import { getShows } from '@/utils/shows'
+import { localOrDefault } from '@/utils/storage'
 
 const NoMore = ({showCallback, shows, position}: any) => {
   const ref = useRef(null)
   const isVisible = useOnScreen(ref)
-  const [page, setPage] = useState(-1)
-  const [pages, setPages] = useState(1)
+  const [page, setPage] = useState(localOrDefault("page", -1))
+  const [pages, setPages] = useState(localOrDefault("pages", 1))
   const [loading, setLoading] = useState(false)
   useEffect(() => {
     if (loading) {

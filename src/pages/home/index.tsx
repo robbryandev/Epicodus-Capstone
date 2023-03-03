@@ -1,10 +1,10 @@
 import Card from '@/components/Card.server'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import * as geohash from "ngeohash"
-import {v4} from "uuid"
-import { getShows, type Show } from '@/utils/shows'
+import { type Show } from '@/utils/shows'
 import NoMore from "@/components/NoMore"
+import { localOrDefault } from '@/utils/storage'
 
 export type UserLocation = {
   lat: number,
@@ -15,7 +15,7 @@ export type UserLocation = {
 export default function Home() {
   const [position, setPosition] = useState({} as UserLocation)
   const [hasPosition, setHasPosition] = useState(false)
-  const [shows, setShows] = useState([] as Show[])
+  const [shows, setShows] = useState(localOrDefault("shows", [] as Show[]))
   const {data: session} = useSession()
 
   function handlePosition(res: GeolocationPosition) {
