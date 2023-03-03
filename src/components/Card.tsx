@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link"
-import Image from "next/image"
 import {AiOutlineHeart, AiFillHeart} from "react-icons/ai"
 import {BiCheck} from "react-icons/bi"
 import { useState } from "react"
 import { Show } from "@/utils/shows"
 import { localOrDefault } from "@/utils/storage"
 import { useSession } from "next-auth/react"
+import { db } from "@/utils/firebase"
 
 export default function Card(props: Show) {
     const userId = useSession().data?.user.id
@@ -22,6 +22,10 @@ export default function Card(props: Show) {
       if (!isSaved) {
         localStorage.setItem(`saved-${userId}-${props.id}`, "1")
         localStorage.setItem(`show-${props.id}`, JSON.stringify(props))
+        db.collection(`${userId}`).doc(props.id).set({...props, saved: 1})
+          .catch((err) => {
+              console.log(err)
+          })
         setIsSaved(true)
       } else {
         setShowRemove(true)
