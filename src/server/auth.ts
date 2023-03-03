@@ -4,14 +4,13 @@ import {
   type NextAuthOptions,
   type DefaultSession,
   Account,
+  User,
+  Awaitable,
 } from "next-auth";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { env } from "../env.mjs";
-import GithubProvider, { GithubProfile } from "next-auth/providers/github";
-import DiscordProvider, { DiscordProfile } from "next-auth/providers/discord";
-import {Magic} from "@magic-sdk/admin";
-import Credentials from "next-auth/providers/credentials";
-import { profile } from "console";
+import SpotifyProvider, { SpotifyProfile } from "next-auth/providers/spotify";
+import Credentials from "next-auth/providers/credentials"
+import { Magic } from "@magic-sdk/admin";
+const magic = new Magic(process.env.MAGIC_SK);
 
 /**
  * Module augmentation for `next-auth` types.
@@ -49,12 +48,8 @@ export const authOptions: NextAuthOptions = {
           const account: Account = token.account as Account
           let profile: any
           switch (account.provider) {
-            case "github":
-              profile = token.profile as GithubProfile
-              session.user.id = `${profile.id}`
-              break
-            case "discord":
-              profile = token.profile as DiscordProfile
+            case "spotify":
+              profile = token.profile as SpotifyProfile
               session.user.id = `${profile.id}`
               break
             default:
@@ -85,19 +80,33 @@ export const authOptions: NextAuthOptions = {
     }
   },
   providers: [
-    GithubProvider({
-      name: "github",
-      id: "github",
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
+    SpotifyProvider({
+      name: "spotify",
+      id: "spotify",
+      clientId: process.env.SPOTIFY_ID!,
+      clientSecret: process.env.SPOTIFY_SECRET!,
     }),
-    DiscordProvider({
-      name: "discord",
-      id: "discord",
-      clientId: process.env.DISCORD_CLIENT_ID!,
-      clientSecret: process.env.DISCORD_CLIENT_SECRET!,
-      authorization: process.env.DISCORD_AUTH_LINK,
-    }),
+    Credentials({
+      name: "magic",
+      id: "magic",
+      credentials: {
+        didToken: { label: "DID Token", type: "text" },
+      },
+      // @ts-expect-error
+      async authorize(didRecord, req) {
+        // validate magic DID token
+        const didToken = didRecord?.didToken
+        if (typeof didToken != "undefined") {
+          magic.token.validate(didToken);
+  
+          // fetch user metadata
+          const metadata = await magic.users.getMetadataByToken(didToken);
+  
+          // return user info
+          return { ...metadata };
+        }
+      },
+    })
     /**
      * ...add more providers here
      *
@@ -114,7 +123,7 @@ export const authOptions: NextAuthOptions = {
 };
 
 /**
- * Wrapper for `getServerSession` so that you don't need to import the
+ * Wrapper for `getServerSession` so that you don"t need to import the
  * `authOptions` in every file.
  *
  * @see https://next-auth.js.org/configuration/nextjs

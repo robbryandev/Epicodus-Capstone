@@ -19,13 +19,10 @@ const server = z.object({
     process.env.VERCEL ? z.string().min(1) : z.string().url(),
   ),
   // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
-  // github oath
-  GITHUB_ID: z.string(),
-  GITHUB_SECRET: z.string(),
-  // discord oath
-  DISCORD_CLIENT_ID: z.string(),
-  DISCORD_CLIENT_SECRET: z.string(),
-  DISCORD_AUTH_LINK: z.string(),
+  // spotify oath
+  SPOTIFY_ID: z.string(),
+  SPOTIFY_SECRET: z.string(),
+  MAGIC_SECRET: z.string(),
   // ticketmaster api
   TICKET_SECRET: z.string()
 });
@@ -34,10 +31,11 @@ const server = z.object({
  * Specify your client-side environment variables schema here.
  * This way you can ensure the app isn't built with invalid env vars.
  * To expose them to the client, prefix them with `NEXT_PUBLIC_`.
- */
+*/
 const client = z.object({
   // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
-  NEXT_PUBLIC_TICKET_KEY: z.string()
+  NEXT_PUBLIC_TICKET_KEY: z.string(),
+  NEXT_PUBLIC_MAGIC_KEY: z.string()
 });
 
 /**
@@ -50,11 +48,10 @@ const processEnv = {
   NODE_ENV: process.env.NODE_ENV,
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-  DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
-  DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
-  DISCORD_AUTH_LINK: process.env.DISCORD_AUTH_LINK,
-  GITHUB_ID: process.env.GITHUB_ID,
-  GITHUB_SECRET: process.env.GITHUB_SECRET,
+  SPOTIFY_ID: process.env.SPOTIFY_ID,
+  SPOTIFY_SECRET: process.env.SPOTIFY_SECRET,
+  NEXT_PUBLIC_MAGIC_KEY: process.env.NEXT_PUBLIC_MAGIC_KEY,
+  MAGIC_SECRET: process.env.MAGIC_SECRET,
   NEXT_PUBLIC_TICKET_KEY: process.env.NEXT_PUBLIC_TICKET_KEY,
   TICKET_SECRET: process.env.TICKET_SECRET
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
