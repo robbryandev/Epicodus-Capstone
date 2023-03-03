@@ -4,13 +4,12 @@ import {
   type NextAuthOptions,
   type DefaultSession,
   Account,
-  User,
-  Awaitable,
 } from "next-auth";
 import SpotifyProvider, { SpotifyProfile } from "next-auth/providers/spotify";
 import Credentials from "next-auth/providers/credentials"
+import { env } from "@/env.mjs";
 import { Magic } from "@magic-sdk/admin";
-const magic = new Magic(process.env.MAGIC_SK);
+const magic = new Magic(env.MAGIC_SECRET);
 
 /**
  * Module augmentation for `next-auth` types.
@@ -52,6 +51,10 @@ export const authOptions: NextAuthOptions = {
               profile = token.profile as SpotifyProfile
               session.user.id = `${profile.id}`
               break
+            case "credentials":
+              profile = token.user
+              session.user.id = `${profile.publicAddress}`
+              break
             default:
               session.user.id = account.provider
               break
@@ -87,25 +90,21 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.SPOTIFY_SECRET!,
     }),
     Credentials({
-      name: "magic",
-      id: "magic",
+      name: 'magic',
       credentials: {
-        didToken: { label: "DID Token", type: "text" },
+        didToken: { label: 'DID Token', type: 'text' },
       },
       // @ts-expect-error
-      async authorize(didRecord, req) {
+      async authorize({ didToken }, req) {
         // validate magic DID token
-        const didToken = didRecord?.didToken
-        if (typeof didToken != "undefined") {
-          magic.token.validate(didToken);
-  
-          // fetch user metadata
-          const metadata = await magic.users.getMetadataByToken(didToken);
-  
-          // return user info
-          return { ...metadata };
-        }
-      },
+        magic.token.validate(didToken);
+
+        // fetch user metadata
+        const metadata = await magic.users.getMetadataByToken(didToken);
+
+        // return user info
+        return { ...metadata};
+      }
     })
     /**
      * ...add more providers here
@@ -119,7 +118,7 @@ export const authOptions: NextAuthOptions = {
   ],
   pages: {
     signIn: "/login",
-  },
+  }
 };
 
 /**

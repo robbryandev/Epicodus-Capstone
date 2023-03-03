@@ -17,25 +17,23 @@ export default function Login({ providers }) {
       router.push("/home");
     }
   });
-  const handleEmail = async (event) => {
-    event.preventDefault()
-    const email = event.target.email;
+  const handleEmail = async ({ email }) => {
     if (!magic) throw new Error(`magic not defined`);
 
     // login with Magic
-    const didToken = await magic.auth.loginWithMagicLink({ email });
+    const didToken = await magic.auth.loginWithEmailOTP({ email });
 
     // sign in with NextAuth
-    await signIn("credentials", {
+    await signIn('credentials', {
       didToken,
-      callbackUrl: router.query["callbackUrl"] as string,
+      callbackUrl: router.query['callbackUrl'] as string,
     });
   };
   return (
     <div className="absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%] rounded-lg bg-background-card px-6 pb-2 pt-6 text-center shadow-md">
-      <form onSubmit={(event) => handleEmail(event)}>
+      {/* @ts-ignore */}
+      <form onSubmit={handleSubmit(handleEmail)}>
         <input
-          id="email"
           className="py-1 px-1.5 mb-2 rounded-md"
           {...register("email", { required: true })}
           placeholder="Email"
