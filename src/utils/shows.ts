@@ -16,30 +16,15 @@ export async function getShows(
   pageCallback: CallableFunction,
   pagesCallback: CallableFunction,
   moreShows = false,
-  shows = [] as Show[],
+  shows: Show[],
   page = 0,
   pages = 0
 ) {
   return new Promise(async (resolve, reject) => {
     if (typeof window !== "undefined") {
-      const storageShows = localStorage.getItem("shows");
-      if (storageShows != null) {
-        const showTime = JSON.parse(storageShows).time;
-        if (Date.now() - showTime > 60_000 * 60 * 24) {
-          localStorage.removeItem("shows");
-          localStorage.removeItem("pages");
-          localStorage.removeItem("page");
-        }
-      }
-      if (localStorage.getItem("shows") == null || moreShows) {
         let result: Show[] = structuredClone(shows);
-        let url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${env.NEXT_PUBLIC_TICKET_KEY}&segmentName=Music&unit=miles&radius=10&geoPoint=${position.hash}&size=100&sort=date,asc`;
+        let url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${env.NEXT_PUBLIC_TICKET_KEY}&segmentName=Music&unit=miles&radius=10&geoPoint=${position.hash}&size=100&sort=date,asc&page=${page}`;
         console.log(`Page: ${page}, total: ${pages}`);
-        if (moreShows && page != 0) {
-          localStorage.removeItem("shows");
-          url = url + `&page=${page}`;
-          console.log(`set page arg, pages=${pages}`);
-        }
         console.log(`request url: ${url}`);
         const res = await fetch(url);
         const rjson = await res.json();
@@ -54,6 +39,7 @@ export async function getShows(
         });
         console.log(`Total pages: ${rjson.page.totalPages}`);
         localStorage.setItem("pages", rjson.page.totalPages);
+        localStorage.setItem("page", `${page}`);
         pagesCallback(rjson.page.totalPages);
         showsCallback(result);
         console.log(result);
@@ -61,7 +47,5 @@ export async function getShows(
         localStorage.setItem("shows", JSON.stringify(resultObj));
         console.log("got shows from ticketmaster");
       }
-    }
-    resolve(null);
-  });
+    })
 }

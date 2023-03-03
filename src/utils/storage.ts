@@ -17,6 +17,7 @@ export function localOrDefault(item: string, defaultValue: any) {
           localStorage.removeItem("page");
           return defaultValue
         }
+        console.log("got shows from local");
         return JSON.parse(localItem).shows as Show[]
       }
       return defaultValue

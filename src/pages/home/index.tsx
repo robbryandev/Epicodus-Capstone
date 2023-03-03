@@ -15,7 +15,9 @@ export type UserLocation = {
 export default function Home() {
   const [position, setPosition] = useState({} as UserLocation)
   const [hasPosition, setHasPosition] = useState(false)
-  const [shows, setShows] = useState(localOrDefault("shows", [] as Show[]))
+  const [shows, setShows] = useState(() => {
+    return localOrDefault("shows", [] as Show[])
+  })
   const {data: session} = useSession()
 
   function handlePosition(res: GeolocationPosition) {
