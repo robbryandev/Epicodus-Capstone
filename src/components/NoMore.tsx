@@ -8,24 +8,16 @@ const NoMore = ({showCallback, shows, position}: any) => {
   const isVisible = useOnScreen(ref)
   const [page, setPage] = useState(localOrDefault("page", -1))
   const [pages, setPages] = useState(localOrDefault("pages", 1))
-  const [loading, setLoading] = useState(false)
-  useEffect(() => {
-    if (loading) {
-      setTimeout(() => {
-        setPage(page + 1)
-        setLoading(false)
-      }, 7000)
-    }
-  }, [loading])
-  if (isVisible && !loading) {
-    setLoading(true)
-    console.log("getting more shows")
-    if ((page + 1) < pages) {
-      console.log(`Passed page as ${page + 1}, Total: ${pages}`)
-      if (page + 1 === 0) {
-        getShows(position, showCallback, setPage, setPages, false, shows, page + 1, pages)
-      } else {
-        getShows(position, showCallback, setPage, setPages, true, shows, page + 1, pages)
+  if (isVisible) {
+    if (page < pages) {
+      console.log("getting more shows")
+      if ((page + 1) < pages) {
+        console.log(`Passed page as ${page + 1}, Total: ${pages}`)
+        if (page + 1 === 0) {
+          getShows(position, showCallback, setPage, setPages, false, shows, page + 1, pages)
+        } else {
+          getShows(position, showCallback, setPage, setPages, true, shows, page + 1, pages)
+        }
       }
     }
   }

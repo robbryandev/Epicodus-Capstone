@@ -40,6 +40,7 @@ export async function getShows(
         console.log(`Total pages: ${rjson.page.totalPages}`);
         localStorage.setItem("pages", rjson.page.totalPages);
         localStorage.setItem("page", `${page}`);
+        pageCallback(page);
         pagesCallback(rjson.page.totalPages);
         showsCallback(result);
         console.log(result);
