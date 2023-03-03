@@ -7,6 +7,7 @@ import { Show } from "@/utils/shows"
 import { localOrDefault } from "@/utils/storage"
 import { useSession } from "next-auth/react"
 import { db } from "@/utils/firebase"
+import { deleteDoc, doc } from "firebase/firestore"
 
 export default function Card(props: Show) {
     const userId = useSession().data?.user.id
@@ -33,6 +34,7 @@ export default function Card(props: Show) {
     }
     function removeShow() {
       localStorage.removeItem(`saved-${userId}-${props.id}`)
+      deleteDoc(doc(db, `${userId}`, props.id));
       setIsSaved(false)
       setShowRemove(false)
     }

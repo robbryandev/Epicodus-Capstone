@@ -5,6 +5,8 @@ import * as geohash from "ngeohash"
 import { type Show } from '@/utils/shows'
 import NoMore from "@/components/NoMore"
 import { localOrDefault } from '@/utils/storage'
+import { collection, getDocs, query } from 'firebase/firestore'
+import { db } from '@/utils/firebase'
 
 export type UserLocation = {
   lat: number,
@@ -32,7 +34,25 @@ export default function Home() {
   function promptLocation() {
     navigator.geolocation.getCurrentPosition(handlePosition, handlePositionErr)
   }
-
+  useEffect(() => {
+    const userDoc = collection(db, `${session?.user.id}`)
+    const saveQuery = query(userDoc);
+    getDocs(saveQuery)
+      .then((userSaved) => {
+        userSaved.forEach((save) => {
+          const data = {
+            id: save.data().id,
+            img: save.data().img,
+            artist: save.data().artist,
+            date: save.data().date,
+            href: save.data().href,
+            saved: save.data().saved
+          }
+          localStorage.setItem(`saved-${session?.user.id}-${data.id}`, "1")
+          localStorage.setItem(`show-${data.id}`, JSON.stringify(data))
+        })
+      })
+}, [])
   useEffect(() => {
       if (session && JSON.stringify(position) == "{}") {
         console.log(session)
