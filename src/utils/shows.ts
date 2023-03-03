@@ -1,6 +1,7 @@
 import { env } from "@/env.mjs";
 import { type UserLocation } from "@/pages/home";
 import { v4 } from "uuid";
+import { localOrDefault } from "./storage";
 
 export type Show = {
   id: string;
@@ -8,6 +9,7 @@ export type Show = {
   artist: string;
   date: string;
   href: string;
+  saved: boolean;
 };
 
 export async function getShows(
@@ -15,12 +17,10 @@ export async function getShows(
   showsCallback: CallableFunction,
   pageCallback: CallableFunction,
   pagesCallback: CallableFunction,
-  moreShows = false,
   shows: Show[],
   page = 0,
   pages = 0
 ) {
-  return new Promise(async (resolve, reject) => {
     if (typeof window !== "undefined") {
         let result: Show[] = structuredClone(shows);
         let url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${env.NEXT_PUBLIC_TICKET_KEY}&segmentName=Music&unit=miles&radius=10&geoPoint=${position.hash}&size=100&sort=date,asc&page=${page}`;
@@ -34,7 +34,8 @@ export async function getShows(
             href: ev.url,
             img: ev.images[0].url,
             date: ev.dates.start.localDate,
-            id: v4(),
+            id: ev.id,
+            saved: false
           });
         });
         console.log(`Total pages: ${rjson.page.totalPages}`);
@@ -47,6 +48,5 @@ export async function getShows(
         const resultObj = { shows: result, time: Date.now() };
         localStorage.setItem("shows", JSON.stringify(resultObj));
         console.log("got shows from ticketmaster");
-      }
-    })
+    }
 }

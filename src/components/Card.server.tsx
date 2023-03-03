@@ -2,26 +2,47 @@
 import Link from "next/link"
 import Image from "next/image"
 import {AiOutlineHeart, AiFillHeart} from "react-icons/ai"
+import {BiCheck} from "react-icons/bi"
 import { useState } from "react"
+import { Show } from "@/utils/shows"
+import { localOrDefault } from "@/utils/storage"
 
-type CardProps = {
-  id: string
-  artist: string
-  img: string
-  date: string
-  href: string
-}
-
-export default function Card(props: CardProps) {
-    const [liked, setLiked] = useState(false)
+export default function Card(props: Show) {
+    const [isSaved, setIsSaved] = useState(localOrDefault(`saved-${props.id}`, 0) as boolean)
+    const [showRemove, setShowRemove] = useState(false)
     const maxTitle = 12
     const artistNameFront = props.artist.length > maxTitle ? props.artist.slice(0, maxTitle) + "..." : props.artist
     const maxFullName = 25
     const artistNameBack = props.artist.length > maxFullName ? props.artist.slice(0, maxFullName) + "..." : props.artist
     const propDate = props.date.split("-")
     const showDate = `${propDate[1]}-${propDate[2]}-${propDate[0]}`
+    function saveShow() {
+      if (!isSaved) {
+        localStorage.setItem(`saved-${props.id}`, "1")
+        setIsSaved(true)
+      } else {
+        setShowRemove(true)
+      }
+    }
+    function removeShow() {
+      localStorage.removeItem(`saved-${props.id}`)
+      setIsSaved(false)
+      setShowRemove(false)
+    }
     return (
       <div className={`artist-card w-40 h-44 pt-2 m-auto my-1 bg-background-card rounded-md text-txt-main`} id={props.id}>
+        {showRemove ? (
+        <div className="relative text-center">
+          <div className="w-full h-full">
+            <p className="text-center my-3 px-2 pb-1">Remove</p>
+            <p className="text-center text-txt-home my-3 px-2 pb-1">{artistNameFront}?</p>
+            <div className="pt-4 text-2xl">
+              <button className="font-normal mr-6 relative bottom-1 text-red-400" onClick={() => setShowRemove(false)}>x</button>
+              <button className="font-bold text-green-400" onClick={() => removeShow()}><BiCheck/></button>
+            </div>
+          </div>
+        </div>
+        ) :         
         <div className="artist-card-holder relative text-center">
           <div className="artist-card-front w-full h-full">
             <div className={`w-9/12 h-auto m-auto p-0 relative top-2 rounded-md bg-gray-100 overflow-hidden`}>
@@ -33,9 +54,9 @@ export default function Card(props: CardProps) {
             <Link href={props.href} className="show-link block mb-2 font-bold text-txt-shows">{artistNameBack}</Link>
             <p className="text-txt-main text-base">{showDate}</p>
             <div className="w-1/5 m-auto text-txt-home text-4xl">
-              <button onClick={() => setLiked(Number(liked) === 0)}>
+              <button onClick={saveShow}>
                 {
-                  liked ? (
+                  isSaved ? (
                     <AiFillHeart/>
                   ) : (
                     <AiOutlineHeart/>
@@ -45,6 +66,7 @@ export default function Card(props: CardProps) {
             </div>
           </div>
         </div>
+        }
       </div>
     )
 }

@@ -13,11 +13,7 @@ const NoMore = ({showCallback, shows, position}: any) => {
       console.log("getting more shows")
       if ((page + 1) < pages) {
         console.log(`Passed page as ${page + 1}, Total: ${pages}`)
-        if (page + 1 === 0) {
-          getShows(position, showCallback, setPage, setPages, false, shows, page + 1, pages)
-        } else {
-          getShows(position, showCallback, setPage, setPages, true, shows, page + 1, pages)
-        }
+        getShows(position, showCallback, setPage, setPages, shows, page + 1, pages)
       }
     }
   }

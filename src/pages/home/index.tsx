@@ -48,7 +48,7 @@ export default function Home() {
                   <div className='flex flex-wrap gap-1 w-82 m-auto pb-2'>
                     {
                       shows.map((show) => {
-                        return <Card key={show.id} id={show.id} img={show.img} artist={show.artist} date={show.date} href={show.href}/>
+                        return <Card key={show.id} id={show.id} img={show.img} saved={show.saved} artist={show.artist} date={show.date} href={show.href}/>
                       })
                     }
                   </div>
