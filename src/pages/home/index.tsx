@@ -1,4 +1,4 @@
-import Card from '@/components/Card.server'
+import Card from '@/components/Card'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import * as geohash from "ngeohash"

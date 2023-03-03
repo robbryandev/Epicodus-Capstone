@@ -6,9 +6,11 @@ import {BiCheck} from "react-icons/bi"
 import { useState } from "react"
 import { Show } from "@/utils/shows"
 import { localOrDefault } from "@/utils/storage"
+import { useSession } from "next-auth/react"
 
 export default function Card(props: Show) {
-    const [isSaved, setIsSaved] = useState(localOrDefault(`saved-${props.id}`, 0) as boolean)
+    const userId = useSession().data?.user.id
+    const [isSaved, setIsSaved] = useState(localOrDefault(`saved-${userId}-${props.id}`, 0) as boolean)
     const [showRemove, setShowRemove] = useState(false)
     const maxTitle = 12
     const artistNameFront = props.artist.length > maxTitle ? props.artist.slice(0, maxTitle) + "..." : props.artist
@@ -18,14 +20,15 @@ export default function Card(props: Show) {
     const showDate = `${propDate[1]}-${propDate[2]}-${propDate[0]}`
     function saveShow() {
       if (!isSaved) {
-        localStorage.setItem(`saved-${props.id}`, "1")
+        localStorage.setItem(`saved-${userId}-${props.id}`, "1")
+        localStorage.setItem(`show-${props.id}`, JSON.stringify(props))
         setIsSaved(true)
       } else {
         setShowRemove(true)
       }
     }
     function removeShow() {
-      localStorage.removeItem(`saved-${props.id}`)
+      localStorage.removeItem(`saved-${userId}-${props.id}`)
       setIsSaved(false)
       setShowRemove(false)
     }
