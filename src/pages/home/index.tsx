@@ -73,7 +73,7 @@ export default function Home() {
                     }
                   </div>
                   {
-                    <NoMore showCallback={setShows} shows={shows} position={position}/>
+                    <NoMore showCallback={setShows} position={position}/>
                   }
                 </>
             ) : (

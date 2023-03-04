@@ -12,50 +12,58 @@ export type Show = {
   saved: boolean;
 };
 
+function newTicketMShow(ev: any) {
+  let imgIndex = 0
+  let gotImg = false
+  for (let i = 0; i < ev.images.length; i++) {
+    if (ev.images[i].url.startsWith("https://i.ticketweb") === false && !gotImg) {
+      imgIndex = i
+      gotImg = true
+    }
+  }
+  const newShow = {
+    artist: ev.name,
+    href: ev.url,
+    img: ev.images[imgIndex].url,
+    date: ev.dates.start.localDate,
+    id: ev.id,
+    saved: false
+  }
+  return newShow
+}
+
 export async function getShows(
   position: UserLocation,
-  showsCallback: CallableFunction,
-  pageCallback: CallableFunction,
-  pagesCallback: CallableFunction,
-  shows: Show[],
-  page = 0,
-  pages = 0
+  showsCallback: CallableFunction
 ) {
     if (typeof window !== "undefined") {
-        let result: Show[] = structuredClone(shows);
-        let url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${env.NEXT_PUBLIC_TICKET_KEY}&segmentName=Music&unit=miles&radius=10&geoPoint=${position.hash}&size=100&sort=date,asc&page=${page}`;
-        console.log(`Page: ${page}, total: ${pages}`);
-        console.log(`request url: ${url}`);
-        const res = await fetch(url);
-        const rjson = await res.json();
-        rjson._embedded.events.forEach((ev: any) => {
-          let imgIndex = 0
-          let gotImg = false
-          for (let i = 0; i < ev.images.length; i++) {
-            if (ev.images[i].url.startsWith("https://i.ticketweb") === false && !gotImg) {
-              imgIndex = i
-              gotImg = true
-            }
-          }
-          const newShow = {
-            artist: ev.name,
-            href: ev.url,
-            img: ev.images[imgIndex].url,
-            date: ev.dates.start.localDate,
-            id: ev.id,
-            saved: false
-          }
-          result.push(newShow);
+        let result: Show[] = [] as Show[];
+        let ticketMUrl = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${env.NEXT_PUBLIC_TICKET_KEY}&segmentName=Music&unit=miles&radius=10&geoPoint=${position.hash}&size=100`;
+        const firstTicketM = await fetch(ticketMUrl);
+        const firstMJson = await firstTicketM.json();
+        const mPages: number = firstMJson.page.totalPages
+        firstMJson._embedded.events.forEach((ev: any) => {
+          result.push(newTicketMShow(ev))
         });
-        console.log(`Total pages: ${rjson.page.totalPages}`);
-        localStorage.setItem("pages", rjson.page.totalPages);
-        localStorage.setItem("page", `${page}`);
-        pageCallback(page);
-        pagesCallback(rjson.page.totalPages);
-        showsCallback(result);
-        console.log(result);
-        const resultObj = { shows: result, time: Date.now() };
+        for (let m = 1; m < mPages; m++) {
+          const TicketM = await fetch(ticketMUrl + `&page=${m}`);
+          const MJson = await TicketM.json();
+          MJson._embedded.events.forEach((ev: any) => {
+            const newMTicket = newTicketMShow(ev)
+            if (result.filter((show) => {
+              return show.id != newMTicket.id && show.artist === newMTicket.artist
+            }).length === 0) {
+              result.push(newTicketMShow(ev))
+            }
+          });
+        }
+        const sortedResult = result.sort((a, b) => {
+          const dateA = Date.parse(a.date)
+          const dateB = Date.parse(b.date)
+          return dateA > dateB ? 1 : -1
+        })
+        showsCallback(sortedResult);
+        const resultObj = { shows: sortedResult, time: Date.now() };
         localStorage.setItem("shows", JSON.stringify(resultObj));
-        console.log("got shows from ticketmaster");
     }
 }

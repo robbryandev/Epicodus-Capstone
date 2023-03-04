@@ -1,22 +1,20 @@
-import { useEffect, useRef, useState } from 'react'
+import {useRef } from 'react'
 import useOnScreen from "@/hooks/useOnScreen"
 import { getShows } from '@/utils/shows'
-import { localOrDefault } from '@/utils/storage'
 
 const NoMore = ({showCallback, shows, position}: any) => {
   const ref = useRef(null)
   const isVisible = useOnScreen(ref)
-  const [page, setPage] = useState(localOrDefault("page", -1))
-  const [pages, setPages] = useState(localOrDefault("pages", 1))
   if (isVisible) {
-    if (page < pages) {
-      console.log("getting more shows")
-      if ((page + 1) < pages) {
-        console.log(`Passed page as ${page + 1}, Total: ${pages}`)
-        getShows(position, showCallback, setPage, setPages, shows, page + 1, pages)
+      const storedShows = localStorage.getItem("shows")
+      if (storedShows == null) {
+        console.log("getting shows")
+        getShows(position, showCallback)
+      } else if (Date.now() - JSON.parse(`${storedShows}`).date > (60_000 * 60) * 3) {
+        console.log("Updating shows")
+        getShows(position, showCallback)
       }
     }
-  }
   return <p ref={ref} className='text-2xl p-6 text-txt-main text-center pb-20'>{isVisible ? "Sorry... There's no more shows :(" : "Test"}</p>
 }
 
