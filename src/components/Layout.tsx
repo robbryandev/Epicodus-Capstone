@@ -7,11 +7,14 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useSession } from "next-auth/react"
 
+export const renderRoutes = ["/home", "/account", "/shows"]
 export default function Layout({ children }: any) {
   const [theme, setTheme] = useState("dark");
-  const renderRoutes = ["/home", "/account", "/shows"]
   const {data: session} = useSession()
   const router = useRouter();
+  useEffect(() => {
+    localStorage.clear()
+  }, [])
 
   const showLogin = () => {
     if (typeof session == "undefined" && renderRoutes.includes(router.asPath)) {

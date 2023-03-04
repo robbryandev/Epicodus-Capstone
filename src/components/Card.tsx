@@ -19,6 +19,14 @@ export default function Card(props: Show) {
     const artistNameBack = props.artist.length > maxFullName ? props.artist.slice(0, maxFullName) + "..." : props.artist
     const propDate = props.date.split("-")
     const showDate = `${propDate[1]}-${propDate[2]}-${propDate[0]}`
+    function arrayBufferToBase64(buffer) {
+      var binary = '';
+      var bytes = [].slice.call(new Uint8Array(buffer));
+    
+      bytes.forEach((b) => binary += String.fromCharCode(b));
+    
+      return window.btoa(binary);
+    };
     function saveShow() {
       if (!isSaved) {
         localStorage.setItem(`saved-${userId}-${props.id}`, "1")
@@ -26,30 +34,16 @@ export default function Card(props: Show) {
         fetch(props.img)
           .then((res) => {
             if (res.body) {
-              res.blob()
-                .then((imgBlob) => {
-                  imgBlob.text()
-                    .then((imgText) => {
-                      console.log(imgText);
-                      let newSave = {...props, saved: 1, img: `data:image/jpeg;base64,${imgText}`}
-                      db.collection(`${userId}`).doc(props.id).set(newSave)
-                        .catch((err) => {
-                            console.log(err)
-                        })
-                    })
-                })
-              // const reader = res.body.getReader()
-              // reader.read()
-              //   .then((data) => {
-              //     const decoder = new TextDecoder('utf8');
-              //     const b64encoded = decoder.decode(data.value);
-              //     console.log(b64encoded)
-              //     let newSave = {...props, saved: 1, img: b64encoded}
-              //     db.collection(`${userId}`).doc(props.id).set(newSave)
-              //       .catch((err) => {
-              //           console.log(err)
-              //       })
-              //   })
+              res.arrayBuffer().then((buffer) => {
+                var base64Flag = 'data:image/jpeg;base64,';
+                var imgText = arrayBufferToBase64(buffer);            
+                console.log(imgText);
+                let newSave = {...props, saved: 1, img: base64Flag + imgText}
+                db.collection(`${userId}`).doc(props.id).set(newSave)
+                  .catch((err) => {
+                      console.log(err)
+                  })
+              });
             }
           })
         setIsSaved(true)

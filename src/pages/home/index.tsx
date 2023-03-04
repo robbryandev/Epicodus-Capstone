@@ -52,7 +52,7 @@ export default function Home() {
           localStorage.setItem(`show-${data.id}`, JSON.stringify(data))
         })
       })
-}, [])
+}, [session?.user.id])
   useEffect(() => {
       if (session && JSON.stringify(position) == "{}") {
         console.log(session)
