@@ -23,9 +23,34 @@ export default function Card(props: Show) {
       if (!isSaved) {
         localStorage.setItem(`saved-${userId}-${props.id}`, "1")
         localStorage.setItem(`show-${props.id}`, JSON.stringify(props))
-        db.collection(`${userId}`).doc(props.id).set({...props, saved: 1})
-          .catch((err) => {
-              console.log(err)
+        fetch(props.img)
+          .then((res) => {
+            if (res.body) {
+              res.blob()
+                .then((imgBlob) => {
+                  imgBlob.text()
+                    .then((imgText) => {
+                      console.log(imgText);
+                      let newSave = {...props, saved: 1, img: `data:image/jpeg;base64,${imgText}`}
+                      db.collection(`${userId}`).doc(props.id).set(newSave)
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                    })
+                })
+              // const reader = res.body.getReader()
+              // reader.read()
+              //   .then((data) => {
+              //     const decoder = new TextDecoder('utf8');
+              //     const b64encoded = decoder.decode(data.value);
+              //     console.log(b64encoded)
+              //     let newSave = {...props, saved: 1, img: b64encoded}
+              //     db.collection(`${userId}`).doc(props.id).set(newSave)
+              //       .catch((err) => {
+              //           console.log(err)
+              //       })
+              //   })
+            }
           })
         setIsSaved(true)
       } else {
