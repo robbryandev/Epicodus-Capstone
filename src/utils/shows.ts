@@ -29,14 +29,23 @@ export async function getShows(
         const res = await fetch(url);
         const rjson = await res.json();
         rjson._embedded.events.forEach((ev: any) => {
-          result.push({
+          let imgIndex = 0
+          let gotImg = false
+          for (let i = 0; i < ev.images.length; i++) {
+            if (ev.images[i].url.startsWith("https://i.ticketweb") === false && !gotImg) {
+              imgIndex = i
+              gotImg = true
+            }
+          }
+          const newShow = {
             artist: ev.name,
             href: ev.url,
-            img: ev.images[0].url,
+            img: ev.images[imgIndex].url,
             date: ev.dates.start.localDate,
             id: ev.id,
             saved: false
-          });
+          }
+          result.push(newShow);
         });
         console.log(`Total pages: ${rjson.page.totalPages}`);
         localStorage.setItem("pages", rjson.page.totalPages);

@@ -37,7 +37,6 @@ export default function Card(props: Show) {
               res.arrayBuffer().then((buffer) => {
                 var base64Flag = 'data:image/jpeg;base64,';
                 var imgText = arrayBufferToBase64(buffer);            
-                console.log(imgText);
                 let newSave = {...props, saved: 1, img: base64Flag + imgText}
                 db.collection(`${userId}`).doc(props.id).set(newSave)
                   .catch((err) => {
@@ -45,6 +44,9 @@ export default function Card(props: Show) {
                   })
               });
             }
+          })
+          .catch((err) => {
+            console.log(err)
           })
         setIsSaved(true)
       } else {
