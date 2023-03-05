@@ -58,7 +58,7 @@ export default function Home() {
         console.log(session)
         promptLocation()
       }
-    }, [session, position])
+    })
   return (
     <>
         <div className="homePage m-0 mx-4 pt-16 p-0">

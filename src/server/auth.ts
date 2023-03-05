@@ -40,6 +40,21 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  **/
 export const authOptions: NextAuthOptions = {
+  events: {
+    signOut({session, token}) {
+      let profile: any = token
+      if (profile.account.provider === "credentials") {
+          try {
+            magic.users.logoutByPublicAddress(profile.user.publicAddress)
+              .then(() => {
+                console.log("logged out of magic email")
+              })
+          } catch(err) {
+            console.log(err)
+          }
+        }
+    }
+  },
   callbacks: {
     session({ session, user, token }) {
       if (session.user) {

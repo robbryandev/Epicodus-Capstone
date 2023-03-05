@@ -1,7 +1,5 @@
 import { env } from "@/env.mjs";
 import { type UserLocation } from "@/pages/home";
-import { v4 } from "uuid";
-import { localOrDefault } from "./storage";
 
 export type Show = {
   id: string;
@@ -11,6 +9,12 @@ export type Show = {
   href: string;
   saved: boolean;
 };
+
+export const showSort = (a, b) => {
+  const dateA = Date.parse(a.date)
+  const dateB = Date.parse(b.date)
+  return dateA > dateB ? 1 : -1
+}
 
 function newTicketMShow(ev: any) {
   let imgIndex = 0
@@ -51,17 +55,13 @@ export async function getShows(
           MJson._embedded.events.forEach((ev: any) => {
             const newMTicket = newTicketMShow(ev)
             if (result.filter((show) => {
-              return show.id != newMTicket.id && show.artist === newMTicket.artist
+              return show.id === newMTicket.id || show.artist === newMTicket.artist
             }).length === 0) {
               result.push(newTicketMShow(ev))
             }
           });
         }
-        const sortedResult = result.sort((a, b) => {
-          const dateA = Date.parse(a.date)
-          const dateB = Date.parse(b.date)
-          return dateA > dateB ? 1 : -1
-        })
+        const sortedResult = result.sort(showSort)
         showsCallback(sortedResult);
         const resultObj = { shows: sortedResult, time: Date.now() };
         localStorage.setItem("shows", JSON.stringify(resultObj));
