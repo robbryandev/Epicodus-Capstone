@@ -9,28 +9,26 @@ import { useSession } from "next-auth/react"
 
 export const renderRoutes = ["/home", "/account", "/shows"]
 export default function Layout({ children }: any) {
-  const [theme, setTheme] = useState("dark");
   const {data: session} = useSession()
-  const router = useRouter();
-  useEffect(() => {
-    localStorage.clear()
-  }, [])
-
-  const showLogin = () => {
-    if (typeof session == "undefined" && renderRoutes.includes(router.asPath)) {
-      return true
-    } else {
-      return false
-    }
+  const [theme, setTheme] = useState("dark");
+  function handleTheme(value: string) {
+    localStorage.setItem(`${session?.user.id}-theme`, value)
+    setTheme(value)
   }
+  const router = useRouter();
 
   const showContent = () => {
-    return session && renderRoutes.includes(router.asPath)
+    return session != null
   }
 
   useEffect(() => {
-    if (showLogin()) {
+    if (!showContent() && renderRoutes.includes(router.asPath)) {
       router.push("/login")
+    } else {
+      const userTheme = localStorage.getItem(`${session?.user.id}-theme`)
+      if (userTheme != null) {
+        setTheme(userTheme)
+      }
     }
   })
 
@@ -44,7 +42,7 @@ export default function Layout({ children }: any) {
         <div className={`settings bg-background-nav min-w-full ${renderRoutes.includes(router.asPath) ? "md:min-w-0" : ""} md:w-10 h-14 text-txt-main z-10 fixed top-0 pt-2 px-6 text-3xl`}>
           <Link href={showContent() ? "/home" : "/"} className='fixed top-1 left-3'>Local Shows</Link>
           {showContent() ? (
-            <Select.Root value={theme} onValueChange={setTheme}>
+            <Select.Root value={theme} onValueChange={handleTheme}>
                 <Select.Trigger className='fixed no-select right-12 md:right-20'>
                     <Select.Value aria-label="dialog">
                       <RiPaintBrushFill name='theme_button'/>
