@@ -37,9 +37,9 @@ module.exports = {
               },
               txt: {
                 main: "black",
-                shows: "#15803d",
-                home: "#b45309",
-                account: "#0284c7"
+                shows: "#84cc16",
+                home: "#fb923c",
+                account: "#22d3ee"
               }
             }
           }

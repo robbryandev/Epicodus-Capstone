@@ -1,16 +1,18 @@
 import Nav from '@/components/Nav.server'
 import * as Select from '@radix-ui/react-select';
-import { RiPaintBrushFill } from 'react-icons/ri';
+import { RiPaintBrushFill, RiFilterFill } from 'react-icons/ri';
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useSession } from "next-auth/react"
+import Filters from './Filters';
 
 export const renderRoutes = ["/home", "/account", "/shows"]
 export default function Layout({ children }: any) {
   const {data: session} = useSession()
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState("dark")
+  const [showFilters, setShowFilters] = useState(false)
   function handleTheme(value: string) {
     localStorage.setItem(`${session?.user.id}-theme`, value)
     setTheme(value)
@@ -41,6 +43,13 @@ export default function Layout({ children }: any) {
         <div className={`settings bg-background-nav min-w-full ${renderRoutes.includes(router.asPath) ? "md:min-w-0" : ""} md:w-10 h-14 text-txt-main z-10 fixed top-0 pt-2 px-6 text-3xl`}>
           <Link href={showContent() ? "/home" : "/"} className='fixed top-1 left-3'>Local Shows</Link>
           {showContent() ? (
+            <>
+            <div className="fixed right-32 md:right-40">
+                <button onClick={() => setShowFilters(Number(showFilters) === 0)}>
+                  <RiFilterFill className="text-txt-main"/>
+                </button>
+            </div>
+            {showFilters ? (<Filters/>) : null}
             <Select.Root value={theme} onValueChange={handleTheme}>
                 <Select.Trigger className='fixed no-select right-12 md:right-20'>
                     <Select.Value aria-label="dialog">
@@ -67,6 +76,7 @@ export default function Layout({ children }: any) {
                     </Select.Content>
                 </Select.Portal>
             </Select.Root>
+            </>
           ) : null
         }
         </div>
