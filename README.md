@@ -51,8 +51,7 @@ What tools, frameworks, libraries, APIs, modules and/or other resources (whateve
 * react
 * typescript
 * tailwind
-* prisma
-* trpc
+* preact signals
 
 If you finish developing the minimum viable product (MVP) with time to spare, what will you work on next? Describe these features here: Be specific.
 * genre filtering

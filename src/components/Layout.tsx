@@ -46,15 +46,17 @@ export default function Layout({ children }: any) {
           <Link href={showContent() ? "/home" : "/"} className='fixed top-1 left-3'>Local Shows</Link>
           {showContent() ? (
             <>
-            <div className="fixed right-32 md:right-24 lg:right-40">
-                <button onClick={() => {
-                  showFilters.value = (Number(showFilters.valueOf()) === 0)
-                }
-                }>
-                  <RiFilterFill className="text-txt-main"/>
-                </button>
-            </div>
-            {showFilters.valueOf() ? (<Filters/>) : null}
+            {router.asPath === "/home" ? (
+              <div className="fixed right-32 md:right-24 lg:right-40">
+                  <button onClick={() => {
+                    showFilters.value = (Number(showFilters.valueOf()) === 0)
+                  }
+                  }>
+                    <RiFilterFill className="text-txt-main"/>
+                  </button>
+              </div>
+            ) : null}
+            {showFilters.valueOf() && router.asPath === "/home" ? (<Filters/>) : null}
             <Select.Root value={theme} onValueChange={handleTheme}>
                 <Select.Trigger className='fixed no-select right-12 md:right-12 lg:right-20'>
                     <Select.Value aria-label="dialog">

@@ -1,7 +1,16 @@
 import { env } from "@/env.mjs";
 import { type UserLocation } from "@/pages/home";
-import { signal } from "@preact/signals-react";
+import { Signal, signal } from "@preact/signals-react";
+import { shows } from "@/pages/home";
+import moment from "moment";
 
+type FilterType = {
+  genre?: string,
+  startDate?: string,
+  endDate?: string
+}
+
+export const genres = signal(new Set<string>())
 export type Show = {
   id: string;
   img: string;
@@ -29,7 +38,6 @@ export const showSort = (a, b) => {
   return dateA > dateB ? 1 : -1
 }
 
-export const genres = signal(new Set<string>())
 function newTicketMShow(ev: any) {
   let imgIndex = 0
   let gotImg = false
@@ -53,19 +61,43 @@ function newTicketMShow(ev: any) {
   return newShow
 }
 
+export const usedFilters: Signal<FilterType> = signal({
+  genre: "",
+  startDate: getDate(),
+  endDate: getDate(true)
+} as FilterType)
+
+function getFilters() {
+  const filters = usedFilters.valueOf()
+  let result: string[] = []
+  if (filters.genre != "") {
+    result.push(`${filters.genre}`)
+  }
+  if (filters.startDate != "") {
+    result.push(`startDateTime=${moment(filters.startDate).format()}`)
+  }
+  if (filters.endDate != "") {
+    result.push(`endDateTime=${moment(filters.endDate).format()}`)
+  }
+  return result
+}
+
 export async function getShows(
-  position: UserLocation,
-  showsCallback: CallableFunction
+  position: UserLocation
 ) {
     if (typeof window !== "undefined") {
         let result: Show[] = [] as Show[];
-        let ticketMUrl = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${env.NEXT_PUBLIC_TICKET_KEY}&segmentName=Music&unit=miles&radius=10&geoPoint=${position.hash}&size=100`;
+        const ticketFilters = getFilters()
+        let ticketMUrl = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${env.NEXT_PUBLIC_TICKET_KEY}&segmentName=Music&unit=miles&radius=10&geoPoint=${position.hash}&size=100${ticketFilters.length > 0 ? "&" + ticketFilters.join("&") : ""}`;
+        console.log(`ReqUrl: ${ticketMUrl}`)
         const firstTicketM = await fetch(ticketMUrl);
         const firstMJson = await firstTicketM.json();
         const mPages: number = firstMJson.page.totalPages
-        firstMJson._embedded.events.forEach((ev: any) => {
-          result.push(newTicketMShow(ev))
-        });
+        if (typeof firstMJson._embedded != "undefined") {
+          firstMJson._embedded.events.forEach((ev: any) => {
+            result.push(newTicketMShow(ev))
+          });
+        }
         for (let m = 1; m < mPages; m++) {
           const TicketM = await fetch(ticketMUrl + `&page=${m}`);
           const MJson = await TicketM.json();
@@ -79,8 +111,8 @@ export async function getShows(
           });
         }
         const sortedResult = result.sort(showSort)
-        showsCallback(sortedResult);
-        const resultObj = { shows: sortedResult, time: Date.now() };
+        shows.value = sortedResult;
+        const resultObj = { shows: sortedResult, time: Date.now(), genres: [...genres.valueOf()] };
         localStorage.setItem("shows", JSON.stringify(resultObj));
     }
 }

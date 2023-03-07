@@ -7,24 +7,22 @@ import NoMore from "@/components/NoMore"
 import { localOrDefault } from '@/utils/storage'
 import { collection, getDocs, query } from 'firebase/firestore'
 import { db } from '@/utils/firebase'
+import { signal } from '@preact/signals-react'
 
 export type UserLocation = {
   lat: number,
   long: number,
   hash: string
 }
-
+export const shows = signal([] as Show[])
+export const position = signal({} as UserLocation)
 export default function Home() {
-  const [position, setPosition] = useState({} as UserLocation)
   const [hasPosition, setHasPosition] = useState(false)
-  const [shows, setShows] = useState(() => {
-    return localOrDefault("shows", [] as Show[])
-  })
   const {data: session} = useSession()
 
   function handlePosition(res: GeolocationPosition) {
-    setPosition({lat: res.coords.latitude, long: res.coords.longitude,
-       hash: geohash.encode(res.coords.latitude, res.coords.longitude, 4)})
+    position.value = {lat: res.coords.latitude, long: res.coords.longitude,
+       hash: geohash.encode(res.coords.latitude, res.coords.longitude, 4)}
     setHasPosition(true)
   }
   function handlePositionErr(err: any) {
@@ -35,6 +33,12 @@ export default function Home() {
     navigator.geolocation.getCurrentPosition(handlePosition, handlePositionErr)
   }
   useEffect(() => {
+    if (typeof window != "undefined") {
+      const newShows = localOrDefault("shows", [] as Show[])
+      if (shows.valueOf().length == 0) {
+        shows.value = newShows
+      }
+    }
     const userDoc = collection(db, `${session?.user.id}`)
     const saveQuery = query(userDoc);
     getDocs(saveQuery)
@@ -54,7 +58,7 @@ export default function Home() {
       })
 }, [session?.user.id])
   useEffect(() => {
-      if (session && JSON.stringify(position) == "{}") {
+      if (session && JSON.stringify(position.valueOf()) == "{}") {
         console.log(session)
         promptLocation()
       }
@@ -67,13 +71,13 @@ export default function Home() {
                 <>                
                   <div className='inline-flex flex-wrap gap-1 w-82 m-auto pb-2'>
                     {
-                      shows.map((show) => {
+                      shows.valueOf().map((show) => {
                         return <Card key={show.id} id={show.id} img={show.img} saved={show.saved} artist={show.artist} date={show.date} href={show.href}/>
                       })
                     }
                   </div>
                   {
-                    <NoMore showCallback={setShows} position={position}/>
+                    <NoMore position={position.valueOf()}/>
                   }
                 </>
             ) : (

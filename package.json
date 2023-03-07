@@ -21,6 +21,7 @@
     "@trpc/server": "^10.9.0",
     "firebase": "^9.17.2",
     "magic-sdk": "^13.5.0",
+    "moment": "^2.29.4",
     "next": "13.1.6",
     "next-auth": "^4.19.0",
     "nextjs-cors": "^2.1.2",
