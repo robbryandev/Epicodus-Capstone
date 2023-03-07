@@ -7,12 +7,13 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useSession } from "next-auth/react"
 import Filters from './Filters';
+import { signal } from '@preact/signals-react';
 
 export const renderRoutes = ["/home", "/account", "/shows"]
+export const showFilters = signal(false)
 export default function Layout({ children }: any) {
   const {data: session} = useSession()
   const [theme, setTheme] = useState("dark")
-  const [showFilters, setShowFilters] = useState(false)
   function handleTheme(value: string) {
     localStorage.setItem(`${session?.user.id}-theme`, value)
     setTheme(value)
@@ -34,6 +35,7 @@ export default function Layout({ children }: any) {
     }
   })
 
+
   return (
       <div className={`app bg-background-main ${theme}`}>
         <Head>
@@ -45,11 +47,14 @@ export default function Layout({ children }: any) {
           {showContent() ? (
             <>
             <div className="fixed right-32 md:right-40">
-                <button onClick={() => setShowFilters(Number(showFilters) === 0)}>
+                <button onClick={() => {
+                  showFilters.value = (Number(showFilters.valueOf()) === 0)
+                }
+                }>
                   <RiFilterFill className="text-txt-main"/>
                 </button>
             </div>
-            {showFilters ? (<Filters/>) : null}
+            {showFilters.valueOf() ? (<Filters/>) : null}
             <Select.Root value={theme} onValueChange={handleTheme}>
                 <Select.Trigger className='fixed no-select right-12 md:right-20'>
                     <Select.Value aria-label="dialog">

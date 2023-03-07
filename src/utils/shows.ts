@@ -10,6 +10,17 @@ export type Show = {
   saved: boolean;
 };
 
+export const getDate = (addYear = false) => {
+  const date = new Date();
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  let year = date.getFullYear();
+  if (addYear) {
+    year++
+  }
+  return `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`
+}
+
 export const showSort = (a, b) => {
   const dateA = Date.parse(a.date)
   const dateB = Date.parse(b.date)

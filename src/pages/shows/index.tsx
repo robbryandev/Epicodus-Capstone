@@ -1,5 +1,5 @@
 import Card from "@/components/Card";
-import { Show, showSort } from "@/utils/shows";
+import { getDate, Show, showSort } from "@/utils/shows";
 import { useSession } from "next-auth/react";
 import { ReactElement, useEffect, useState } from "react";
 import { onSnapshot } from "firebase/firestore";
@@ -7,18 +7,7 @@ import { collection } from "firebase/firestore";
 import { db } from "@/utils/firebase";
 
 function savedShows(shows): ReactElement {
-  const date = new Date();
-  let day = date.getDate();
-  let month = date.getMonth() + 1;
-  let year = date.getFullYear();
-  const compareDate = Date.parse(
-    `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`
-  );
-  console.log(
-    `CurrentDate: ${year}-${month < 10 ? `0${month}` : month}-${
-      day < 10 ? `0${day}` : day
-    } ${compareDate}`
-  );
+  const compareDate = Date.parse(getDate())
   const upcoming = [] as ReactElement[];
   const memories = [] as ReactElement[];
   shows.forEach((show) => {
