@@ -1,5 +1,6 @@
 import { env } from "@/env.mjs";
 import { type UserLocation } from "@/pages/home";
+import { signal } from "@preact/signals-react";
 
 export type Show = {
   id: string;
@@ -7,6 +8,7 @@ export type Show = {
   artist: string;
   date: string;
   href: string;
+  genre?: string;
   saved: boolean;
 };
 
@@ -27,6 +29,7 @@ export const showSort = (a, b) => {
   return dateA > dateB ? 1 : -1
 }
 
+export const genres = signal(new Set<string>())
 function newTicketMShow(ev: any) {
   let imgIndex = 0
   let gotImg = false
@@ -36,12 +39,15 @@ function newTicketMShow(ev: any) {
       gotImg = true
     }
   }
+  const thisGenre = ev.classifications[0].genre.name
+  genres.value.add(thisGenre)
   const newShow = {
     artist: ev.name,
     href: ev.url,
     img: ev.images[imgIndex].url,
     date: ev.dates.start.localDate,
     id: ev.id,
+    genre: thisGenre,
     saved: false
   }
   return newShow

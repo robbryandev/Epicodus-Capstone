@@ -2,6 +2,7 @@ import { getDate } from '@/utils/shows';
 import { Signal, signal } from '@preact/signals-react';
 import { BiCheck } from 'react-icons/bi';
 import { showFilters } from './Layout';
+import { genres } from '@/utils/shows';
 
 type FilterType = {
   genre?: string
@@ -20,9 +21,13 @@ export default function Filters() {
           usedFilters.value.genre = val.currentTarget.value
         }}>
           <option value=""></option>
-          <option value="test1">Test 1</option>
-          <option value="test2">Test 2</option>
-          <option value="test3">Test 3</option>
+          {
+            [...genres.valueOf()].map((genre) => {
+              return (
+                <option key={`genre-${genre}`} value={genre}>{genre}</option>
+              )
+            })
+          }
         </select>
       </div>
     <p className='text-2xl mt-4'>Start Date</p>
