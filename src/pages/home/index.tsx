@@ -17,7 +17,7 @@ export type UserLocation = {
 export const shows = signal([] as Show[])
 export const position = signal({} as UserLocation)
 export default function Home() {
-  const [hasPosition, setHasPosition] = useState(false)
+  const [hasPosition, setHasPosition] = useState(JSON.stringify(position.valueOf()) != "{}")
   const {data: session} = useSession()
 
   function handlePosition(res: GeolocationPosition) {

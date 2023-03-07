@@ -1,4 +1,4 @@
-import { defaultFilters, getDate, getShows, Show } from '@/utils/shows';
+import { defaultFilters, genres, getDate, getShows, Show } from '@/utils/shows';
 import { usedFilters } from '@/utils/shows';
 import { BiCheck } from 'react-icons/bi';
 import { showFilters } from './Layout';
@@ -17,7 +17,7 @@ export default function Filters() {
         }}>
           <option value=""></option>
           {
-            [...(localShows != null ? JSON.parse(localShows).genres : [])].map((genre) => {
+            [...(localShows != null ? JSON.parse(localShows).genres : [...genres.valueOf()])].map((genre) => {
               return (
                 <option key={`${genre.id}`} value={genre.id}>{genre.name}</option>
               )

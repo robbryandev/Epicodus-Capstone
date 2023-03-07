@@ -12,7 +12,7 @@ import { signal } from '@preact/signals-react';
 export const renderRoutes = ["/home", "/account", "/shows"]
 export const showFilters = signal(false)
 export default function Layout({ children }: any) {
-  const {data: session} = useSession()
+  const {data: session, status: status} = useSession()
   const [theme, setTheme] = useState("dark")
   function handleTheme(value: string) {
     localStorage.setItem(`${session?.user.id}-theme`, value)
@@ -25,16 +25,17 @@ export default function Layout({ children }: any) {
   }
 
   useEffect(() => {
-    if (!showContent() && renderRoutes.includes(router.asPath)) {
-      router.push("/login")
-    } else {
-      const userTheme = localStorage.getItem(`${session?.user.id}-theme`)
-      if (userTheme != null) {
-        setTheme(userTheme)
+    if (status != "loading") {
+      if (session == null && renderRoutes.includes(router.asPath)) {
+        router.push("/login")
+      } else {
+        const userTheme = localStorage.getItem(`${session?.user.id}-theme`)
+        if (userTheme != null) {
+          setTheme(userTheme)
+        }
       }
     }
-  })
-
+  }, [])
 
   return (
       <div className={`app bg-background-main ${theme}`}>
