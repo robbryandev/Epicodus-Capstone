@@ -7,7 +7,7 @@ import { collection } from "firebase/firestore";
 import { db } from "@/utils/firebase";
 
 function savedShows(shows): ReactElement {
-  const compareDate = Date.parse(getDate())
+  const compareDate = Date.parse(getDate({}))
   const upcoming = [] as ReactElement[];
   const memories = [] as ReactElement[];
   shows.forEach((show) => {

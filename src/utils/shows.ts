@@ -10,20 +10,28 @@ type FilterType = {
   endDate?: string
 }
 
-export const genres = signal(new Set<string>())
+type GenreType = {
+  name: string,
+  id: string
+}
+
+export const genres = signal(new Set<GenreType>())
 export type Show = {
   id: string;
   img: string;
   artist: string;
   date: string;
   href: string;
-  genre?: string;
+  genre?: GenreType;
   saved: boolean;
 };
 
-export const getDate = (addYear = false) => {
+export const getDate = ({addYear = false, addOne = false}) => {
   const date = new Date();
   let day = date.getDate();
+  if (addOne) {
+    day++
+  }
   let month = date.getMonth() + 1;
   let year = date.getFullYear();
   if (addYear) {
@@ -47,8 +55,15 @@ function newTicketMShow(ev: any) {
       gotImg = true
     }
   }
-  const thisGenre = ev.classifications[0].genre.name
-  genres.value.add(thisGenre)
+  const genreName = ev.classifications[0].genre.name
+  const genreId = ev.classifications[0].genre.id
+  const thisGenre = {name: genreName, id: genreId}
+  const newGenre = [...genres.value].filter((g) => {
+    return g.name == genreName
+  }).length == 0;
+  if (genreName != "Other" && newGenre) {
+    genres.value.add(thisGenre)
+  }
   const newShow = {
     artist: ev.name,
     href: ev.url,
@@ -60,18 +75,18 @@ function newTicketMShow(ev: any) {
   }
   return newShow
 }
-
-export const usedFilters: Signal<FilterType> = signal({
+export const defaultFilters = {
   genre: "",
-  startDate: getDate(),
-  endDate: getDate(true)
-} as FilterType)
+  startDate: getDate({}),
+  endDate: getDate({addYear: true})
+} as FilterType
+export const usedFilters: Signal<FilterType> = signal(defaultFilters)
 
 function getFilters() {
   const filters = usedFilters.valueOf()
   let result: string[] = []
   if (filters.genre != "") {
-    result.push(`${filters.genre}`)
+    result.push(`genreId=${filters.genre}`)
   }
   if (filters.startDate != "") {
     result.push(`startDateTime=${moment(filters.startDate).format()}`)
