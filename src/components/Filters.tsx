@@ -27,13 +27,13 @@ export default function Filters() {
       </div>
     <p className='text-2xl mt-4'>Start Date</p>
       <div className='text-center mt-2'>
-        <input className="bg-background-main mt-2" id='start-date' name='start-date' type="date" min={getDate({})} defaultValue={usedFilters.valueOf().startDate} onChange={(val) => {
+        <input className="bg-background-main mt-2 w-4/5" id='start-date' name='start-date' type="date" min={getDate({})} defaultValue={usedFilters.valueOf().startDate} onChange={(val) => {
             usedFilters.value.startDate = val.currentTarget.value
           }} />
       </div>
     <p className='text-2xl mt-4'>End Date</p>
       <div className='mt-2 text-center'>
-        <input className="bg-background-main mt-2" id='end-date' name='end-date' type="date" min={getDate({addOne: true})} defaultValue={usedFilters.valueOf().endDate} onChange={(val) => {
+        <input className="bg-background-main mt-2 w-4/5" id='end-date' name='end-date' type="date" min={getDate({addOne: true})} defaultValue={usedFilters.valueOf().endDate} onChange={(val) => {
             usedFilters.value.endDate = val.currentTarget.value
           }} />
       </div>
