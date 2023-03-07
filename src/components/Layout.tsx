@@ -33,8 +33,7 @@ export default function Layout({ children }: any) {
   })
 
   return (
-    <>
-        <div className={`app bg-background-main ${theme}`}>
+      <div className={`app bg-background-main ${theme}`}>
         <Head>
           <title>Local Shows</title>
           <meta name="description" content="Welcome to your local show destination<"/>
@@ -73,7 +72,6 @@ export default function Layout({ children }: any) {
         </div>
         <main>{children}</main>
         {showContent() ? (<Nav/>) : null }
-      </div>
-    </>
+    </div>
   )
 }

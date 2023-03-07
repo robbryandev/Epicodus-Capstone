@@ -31,9 +31,9 @@ module.exports = {
           extend: {
             colors: {
               background: {
-                main: '#e4e4e7',
-                card: '#d4d4d8',
-                nav: '#d1d5db'
+                main: '#f5f5f5',
+                card: '#e4e4e7',
+                nav: '#e5e7eb'
               },
               txt: {
                 main: "black",
