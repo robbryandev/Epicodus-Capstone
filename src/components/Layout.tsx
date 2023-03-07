@@ -46,7 +46,7 @@ export default function Layout({ children }: any) {
           <Link href={showContent() ? "/home" : "/"} className='fixed top-1 left-3'>Local Shows</Link>
           {showContent() ? (
             <>
-            <div className="fixed right-32 md:right-40">
+            <div className="fixed right-32 md:right-24 lg:right-40">
                 <button onClick={() => {
                   showFilters.value = (Number(showFilters.valueOf()) === 0)
                 }
@@ -56,7 +56,7 @@ export default function Layout({ children }: any) {
             </div>
             {showFilters.valueOf() ? (<Filters/>) : null}
             <Select.Root value={theme} onValueChange={handleTheme}>
-                <Select.Trigger className='fixed no-select right-12 md:right-20'>
+                <Select.Trigger className='fixed no-select right-12 md:right-12 lg:right-20'>
                     <Select.Value aria-label="dialog">
                       <RiPaintBrushFill name='theme_button'/>
                     </Select.Value>
