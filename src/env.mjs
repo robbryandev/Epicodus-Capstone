@@ -5,7 +5,6 @@ import { z } from "zod";
  * This way you can ensure the app isn't built with invalid env vars.
  */
 const server = z.object({
-  DATABASE_URL: z.string().url(),
   NODE_ENV: z.enum(["development", "test", "production"]),
   NEXTAUTH_SECRET:
     process.env.NODE_ENV === "production"
@@ -33,7 +32,6 @@ const server = z.object({
  * To expose them to the client, prefix them with `NEXT_PUBLIC_`.
 */
 const client = z.object({
-  // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
   NEXT_PUBLIC_TICKET_KEY: z.string(),
   NEXT_PUBLIC_MAGIC_KEY: z.string(),
   NEXT_PUBLIC_FIREBASE_API_KEY: z.string(),
@@ -50,7 +48,6 @@ const client = z.object({
  * @type {Record<keyof z.infer<typeof server> | keyof z.infer<typeof client>, string | undefined>}
  */
 const processEnv = {
-  DATABASE_URL: process.env.DATABASE_URL,
   NODE_ENV: process.env.NODE_ENV,
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,

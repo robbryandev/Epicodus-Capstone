@@ -74,7 +74,7 @@ export default function Shows() {
     });
     setUpcoming(newUpcoming)
     setMemories(newMemories)
-  }, [shows])
+  }, [compareDate, shows])
   return (
     <>
     <div className="shows mx-4 p-0 py-16">

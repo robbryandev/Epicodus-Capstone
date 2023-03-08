@@ -11,13 +11,12 @@ export function localOrDefault(item: string, defaultValue: any) {
     } else if (typeof defaultValue === typeof emptyShows){
       if (localItem != null) {
         const showTime = JSON.parse(localItem).time;
-        if (Date.now() - showTime > 60_000 * 60 * 24) {
+        if (Date.now() - showTime > 60_000 * 60 * 3) {
           localStorage.removeItem("shows");
           localStorage.removeItem("pages");
           localStorage.removeItem("page");
           return defaultValue
         }
-        console.log("got shows from local");
         return JSON.parse(localItem).shows as Show[]
       }
       return defaultValue
