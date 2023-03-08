@@ -5,6 +5,7 @@ import { ReactElement, useEffect, useState } from "react";
 import { HiUpload } from "react-icons/hi"
 import { onSnapshot, collection } from "firebase/firestore";
 import { db } from "@/utils/firebase";
+import { v4 } from "uuid";
 
 export default function Shows() {
   const { data: session } = useSession();
@@ -85,23 +86,34 @@ export default function Shows() {
           <div>
             <div className={`artist-card w-40 h-44 pt-2 m-auto my-1 bg-background-card rounded-md text-txt-main`}>
               <form className="text-center">
-                <input className="w-4/5 rounded-md px-1.5 py-1 m-2" onChange={(val) => setDisplayCard({...displayCard, artist: val.currentTarget.value})} name="name" type="text" placeholder="Name" />
-                <input className="w-4/5 rounded-md px-1.5 py-1 m-2 mb-0" onChange={(val) => setDisplayCard({...displayCard, date: val.currentTarget.value})} name="date" type="date" placeholder="Date" />
+                <input className="w-4/5 rounded-md px-1.5 py-1 m-2 bg-background-main" onChange={(val) => setDisplayCard({...displayCard, artist: val.currentTarget.value})} name="name" type="text" placeholder="Name" />
+                <input className="w-4/5 rounded-md px-1.5 py-1 m-2 mb-0 bg-background-main" onChange={(val) => setDisplayCard({...displayCard, date: val.currentTarget.value})} name="date" type="date" placeholder="Date" />
                 <label htmlFor="show-img" className="m-0 p-0" >
                   <HiUpload className="relative left-1/2 translate-x-[-50%] top-2 text-3xl text-txt-main hover:cursor-pointer"/>
                   </label>
                   <input className="invisible w-0 h-0" name="show-img" id="show-img" onChange={(val) => {
                     const inputFiles = val.currentTarget.files
                     if (inputFiles != null) {
-                      inputFiles[0].arrayBuffer()
-                        .then((inputBuffer) => {
-                          const encodedImage = 'data:image/jpeg;base64,' + arrayBufferToBase64(inputBuffer)
-                          setDisplayCard({...displayCard, img: encodedImage})
-                        })
+                      if (inputFiles.length > 0) {
+                        inputFiles[0].arrayBuffer()
+                          .then((inputBuffer) => {
+                            const encodedImage = 'data:image/jpeg;base64,' + arrayBufferToBase64(inputBuffer)
+                            setDisplayCard({...displayCard, img: encodedImage})
+                          })
+                      }
                     }
                   }} type="file"/>
                 <br />
-                <button type="submit" className="text-txt-home relative bottom-2">Add Show</button>
+                <button type="button" className="text-txt-home relative bottom-2" onClick={() => {
+                    const randId = v4()
+                    const newSave = {...displayCard, id: randId}
+                    localStorage.setItem(`saved-${session?.user.id}-${newSave.id}`, "1")
+                    localStorage.setItem(`show-${newSave.id}`, JSON.stringify(newSave))
+                    db.collection(`${session?.user.id}`).doc(newSave.id).set(newSave)
+                    .catch((err) => {
+                        console.log(err)
+                    })
+                }}>Add Show</button>
               </form>
             </div>
             <Card {...displayCard}/>
