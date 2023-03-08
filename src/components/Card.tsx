@@ -9,6 +9,11 @@ import { useSession } from "next-auth/react"
 import { db } from "@/utils/firebase"
 import { deleteDoc, doc } from "firebase/firestore"
 
+export function arrayBufferToBase64(buffer: ArrayBuffer) {
+  const newBuffer = Buffer.from(buffer);
+  return newBuffer.toString('base64');
+};
+
 export default function Card(props: Show) {
     const userId = useSession().data?.user.id
     const [isSaved, setIsSaved] = useState(localOrDefault(`saved-${userId}-${props.id}`, 0) as boolean)
@@ -19,14 +24,6 @@ export default function Card(props: Show) {
     const artistNameBack = props.artist.length > maxFullName ? props.artist.slice(0, maxFullName) + "..." : props.artist
     const propDate = props.date.split("-")
     const showDate = `${propDate[1]}-${propDate[2]}-${propDate[0]}`
-    function arrayBufferToBase64(buffer) {
-      var binary = '';
-      var bytes = [].slice.call(new Uint8Array(buffer));
-    
-      bytes.forEach((b) => binary += String.fromCharCode(b));
-    
-      return window.btoa(binary);
-    };
     function saveShow() {
       if (!isSaved) {
         localStorage.setItem(`saved-${userId}-${props.id}`, "1")
