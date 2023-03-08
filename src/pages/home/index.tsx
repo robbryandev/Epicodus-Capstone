@@ -59,7 +59,6 @@ export default function Home() {
 }, [session?.user.id])
   useEffect(() => {
       if (session && JSON.stringify(position.valueOf()) == "{}") {
-        console.log(session)
         promptLocation()
       }
     })

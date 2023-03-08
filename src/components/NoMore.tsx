@@ -8,10 +8,8 @@ const NoMore = ({position}: any) => {
   if (isVisible) {
       const storedShows = localStorage.getItem("shows")
       if (storedShows == null) {
-        console.log("getting shows")
         getShows(position)
       } else if (Date.now() - JSON.parse(`${storedShows}`).date > (60_000 * 60) * 3) {
-        console.log("Updating shows")
         getShows(position)
       }
     }

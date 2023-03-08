@@ -47,7 +47,6 @@ export const authOptions: NextAuthOptions = {
           try {
             magic.users.logoutByPublicAddress(profile.user.publicAddress)
               .then(() => {
-                console.log("logged out of magic email")
               })
           } catch(err) {
             console.log(err)

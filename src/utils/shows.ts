@@ -105,7 +105,6 @@ export async function getShows(
         let result: Show[] = [] as Show[];
         const ticketFilters = getFilters()
         let ticketMUrl = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${env.NEXT_PUBLIC_TICKET_KEY}&segmentName=Music&unit=miles&radius=10&geoPoint=${position.hash}&size=100${ticketFilters.length > 0 ? "&" + ticketFilters.join("&") : ""}`;
-        console.log(`ReqUrl: ${ticketMUrl}`)
         const firstTicketM = await fetch(ticketMUrl);
         const firstMJson = await firstTicketM.json();
         const mPages: number = firstMJson.page.totalPages
