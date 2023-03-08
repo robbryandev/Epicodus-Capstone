@@ -22,7 +22,7 @@ export default function Home() {
     <>
         <div className="homePage m-0 mt-14 ml-6 p-0 text-txt-main text-center">
           <p className='text-2xl mb-2 pt-2'>Welcome to local shows</p>
-          <p className='mb-4 w-2/5 m-auto'>{description}</p>
+          <p className='mb-4 w-4/5 md:w-72 m-auto'>{description}</p>
           <Link href={session ? "/home" : "/login"} className='bg-background-card p-2 rounded-md'>See shows</Link>
         </div>
     </>
