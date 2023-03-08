@@ -24,6 +24,7 @@ export type Show = {
   href: string;
   genre?: GenreType;
   saved: boolean;
+  disabled?: boolean
 };
 
 export const getDate = ({addYear = false, addOne = false}) => {

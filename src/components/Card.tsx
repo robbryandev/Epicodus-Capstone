@@ -2,7 +2,7 @@
 import Link from "next/link"
 import {AiOutlineHeart, AiFillHeart} from "react-icons/ai"
 import {BiCheck} from "react-icons/bi"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Show } from "@/utils/shows"
 import { localOrDefault } from "@/utils/storage"
 import { useSession } from "next-auth/react"
@@ -50,15 +50,24 @@ export default function Card(props: Show) {
           })
         setIsSaved(true)
       } else {
-        setShowRemove(true)
+        if (!props.disabled) {
+          setShowRemove(true)
+        }
       }
     }
     function removeShow() {
-      localStorage.removeItem(`saved-${userId}-${props.id}`)
-      deleteDoc(doc(db, `${userId}`, props.id));
-      setIsSaved(false)
-      setShowRemove(false)
+      if (!props.disabled) {
+        localStorage.removeItem(`saved-${userId}-${props.id}`)
+        deleteDoc(doc(db, `${userId}`, props.id));
+        setIsSaved(false)
+        setShowRemove(false)
+      }
     }
+    useEffect(() => {
+      if (props.disabled) {
+        setIsSaved(true)
+      }
+    })
     return (
       <div className={`artist-card w-40 h-44 pt-2 m-auto my-1 bg-background-card rounded-md text-txt-main`} id={props.id}>
         {showRemove ? (

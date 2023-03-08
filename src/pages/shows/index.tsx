@@ -11,6 +11,15 @@ export default function Shows() {
   const [upcoming, setUpcoming] = useState([] as ReactElement[]);
   const [memories, setMemories] = useState([] as ReactElement[]);
   const [shows, setShows] = useState([] as Show[]);
+  const [displayCard, setDisplayCard] = useState({
+    id: "display",
+    img: "",
+    saved: true,
+    artist: "artist",
+    date: "00-00-0000",
+    href: "#",
+    disabled: true
+  })
   const [showCustom, setShowCustom] = useState(false);
   const compareDate = Date.parse(getDate({}))
   useEffect(() => {
@@ -23,7 +32,7 @@ export default function Shows() {
           artist: show.data().artist,
           date: show.data().date,
           href: show.data().href,
-          saved: show.data().saved,
+          saved: show.data().saved
         };
         result.push(data);
       });
@@ -68,11 +77,25 @@ export default function Shows() {
   return (
     <>
     <div className="shows mx-4 p-0 py-16">
-      <button className="text-txt-main text-xl rounded-md bg-background-card py-1 px-2" onClick={() => setShowCustom(Number(showCustom) == 0)}>Custom Show</button>
+      <div className="text-center">
+        <button className="text-txt-main text-xl rounded-md bg-background-card py-1 px-2" onClick={() => setShowCustom(Number(showCustom) == 0)}>Custom Show</button>
+      </div>
       {
         showCustom ? (
-          <div className="artist-card-back bg-background-card p-2 pb-4 text-center w-full h-auto">
-
+          <div>
+            <div className={`artist-card w-40 h-44 pt-2 m-auto my-1 bg-background-card rounded-md text-txt-main`}>
+              <form className="text-center">
+                <input className="w-4/5" onChange={(val) => setDisplayCard({...displayCard, artist: val.currentTarget.value})} name="name" type="text" placeholder="Name" />
+                <input className="w-4/5" onChange={(val) => setDisplayCard({...displayCard, date: val.currentTarget.value})} name="date" type="date" placeholder="Date" />
+                <label>
+                  <input className="invisible" name="show-img" type="file"/>
+                  test
+                </label>
+                <br />
+                <button type="submit">Add Show</button>
+              </form>
+            </div>
+            <Card {...displayCard}/>
           </div>
         ) : null
       }
