@@ -35,7 +35,7 @@ export default function Layout({ children }: any) {
         }
       }
     }
-  }, [])
+  }, [status, session, router])
 
   return (
       <div className={`app bg-background-main ${theme}`}>
