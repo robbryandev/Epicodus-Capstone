@@ -14,6 +14,13 @@ import imgThemesMain from "./assets/Images/themes.png";
 import imgThemesLight from "./assets/Images/themes-light.png";
 import imgThemesMidnight from "./assets/Images/themes-midnight.png";
 
+import imgTechNextauth from "./assets/Images/nextauth.png";
+import imgTechSignals from "./assets/Images/signals.png";
+import imgTechT3 from "./assets/Images/t3.png";
+import imgTechTailwind from "./assets/Images/tailwind.png";
+import imgTechTypescript from "./assets/Images/typescript.svg";
+import imgTechFirestore from "./assets/Images/firestore.png";
+
 Reveal.initialize();
 
 $(document).ready(() => {
@@ -27,4 +34,11 @@ $(document).ready(() => {
   $("#img-themes-main")[0].setAttribute("src", imgThemesMain);
   $("#img-themes-light")[0].setAttribute("src", imgThemesLight);
   $("#img-themes-midnight")[0].setAttribute("src", imgThemesMidnight);
+
+  $("#nextauth")[0].setAttribute("src", imgTechNextauth);
+  $("#signals")[0].setAttribute("src", imgTechSignals);
+  $("#t3")[0].setAttribute("src", imgTechT3);
+  $("#tailwind")[0].setAttribute("src", imgTechTailwind);
+  $("#typescript")[0].setAttribute("src", imgTechTypescript);
+  $("#firestore")[0].setAttribute("src", imgTechFirestore);
 });
