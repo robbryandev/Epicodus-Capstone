@@ -1,0 +1,15 @@
+{
+  "include": [
+    "src/**/*.ts",
+    "__tests__/**/*.ts"
+, "src/index.js"  ],
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es6",
+    "jsx": "react",
+    "allowJs": true,
+    "moduleResolution": "node"
+  }
+}
